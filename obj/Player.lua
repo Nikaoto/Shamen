@@ -21,7 +21,7 @@ Player.AIM_HIDE_INTERVAL = 2500
 function Player:new(sprite, color, joystick, x, y, z)
 	self.sprite = sprite
 	self.joystick = joystick
-	
+
 	if #color == 3 then
 		self.color = {color[1], color[2], color[3], 255}
 	else
@@ -29,7 +29,7 @@ function Player:new(sprite, color, joystick, x, y, z)
 	end
 
 	self.x, self.y, self.z = x, y, z
-	
+
 	self.w = self.sprite:getWidth()
 	self.h = self.sprite:getHeight()
 	self.ox = self.w / 2
@@ -78,7 +78,7 @@ end
 function Player:draw()
 	self:updateShader()
 
-	deep:queueS(self.shader, self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy, 
+	deep:queueS(self.shader, self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 		self.ox, self.oy)
 	self:drawAim()
 	self:animate()
@@ -131,7 +131,7 @@ function Player:drawAim()
 	local l = 35
 	local mod = 1/3
 	if self.aim.shouldShow then
-		deep:ellipseC(self.aim.color, "line", self.aim.x, self.aim.y, self.aim.z, 
+		deep:ellipseC(self.aim.color, "line", self.aim.x, self.aim.y, self.aim.z,
 			self.aim.radius*2, self.aim.radius)
 		deep:setColor(self.color)
 		deep:line(self.aim.x, self.aim.y - l, self.aim.x, self.aim.y, self.aim.z + 1)
@@ -148,7 +148,7 @@ end
 
 function Player:isAiming(deadzone)
 	deadzone = deadzone or 0
-	if math.abs(self:getAxis(Player.AXIS_RX)) > deadzone 
+	if math.abs(self:getAxis(Player.AXIS_RX)) > deadzone
 		or math.abs(self:getAxis(Player.AXIS_RY)) > deadzone then
 		return true
 	end
@@ -188,6 +188,7 @@ end
 
 -- Joystick inputs
 function Player:getAxis(axisNum, deadzone)
+	if not self.joystick then	return 0 end
 	deadzone = deadzone or 0
 	local ret = self.joystick:getAxis(axisNum)
 	if math.abs(ret) > deadzone then
@@ -198,6 +199,7 @@ function Player:getAxis(axisNum, deadzone)
 end
 
 function Player:getButton(buttonNum, ...)
+	if not self.joystick then return false end
 	return self.joystick:isDown(buttonNum, ...)
 end
 
