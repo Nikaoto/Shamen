@@ -12,11 +12,12 @@ Totem.DEFAULT_AREAL_Z = 2
 Totem.DEFAULT_AREAL_SIZE = 60
 Totem.DEFAULT_COLOR = {0, 255, 255}
 Totem.DEFAULT_FALL_TIME = 0.08
-Totem.DEFAULT_SHAKE_AMOUNT = 30
+Totem.DEFAULT_SHAKE_AMOUNT = 20
 
 function Totem:new(coords, areal, color)
   self.areal = areal or Totem.DEFAULT_AREAL_SIZE
   self.color = color or Totem.DEFAULT_COLOR
+  self.arealColor = {color[1], color[2], color[3], 100}
   self.width = Totem.WIDTH
   self.height = Totem.HEIGHT
 
@@ -27,12 +28,17 @@ function Totem:new(coords, areal, color)
   self.startY = coords.y - screenHeight
   self.endY = coords.y
   self.x , self.y , self.z = coords.x , self.startY , coords.z
-  self.tween = tween.new(Totem.DEFAULT_FALL_TIME, self, { y = coords.y }, tween.easing.expoIn)
+  self.tween = tween.new(Totem.DEFAULT_FALL_TIME, self, { y = coords.y, z = coords.z + self.height}, tween.easing.expoIn)
   return self
 end
 
+function Totem:log()
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.print("x = " .. self.x .. ", y = ".. self.y .. ", z = ")
+end
+
 function Totem:draw()
-  deep:rectangleC(self.color, "fill", self.x, self.y, self.z, self.width, self.height)
+  deep:rectangleC(self.color, "fill", self.x, self.y, math.floor(self.z), self.width, self.height)
   if self.complete then
     deep:ellipseC(self.color, "line", self.ox, self.oy, Totem.DEFAULT_AREAL_Z, self.areal, self.areal / 2)
   end
@@ -44,8 +50,6 @@ function Totem:update(dt)
     screen:setShake(Totem.DEFAULT_SHAKE_AMOUNT)
     self.shook = true
   end
-
-  print("totem table " .. self.x .. "; ".. self.y)
 end
 
 function Totem:animate()

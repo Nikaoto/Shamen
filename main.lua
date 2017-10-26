@@ -4,19 +4,6 @@ require "obj/Player"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1200
-screenHeight = 600
-isFullscreen = false
-
-world = {
-	limitTop = screenHeight*2/9,
-	limitBottom = screenHeight,
-	limitLeft = 0,
-	limitRight = screenWidth,
-	shake = 20,
-}
-world.zRange = world.limitBottom - world.limitTop
-
 local p1
 local p2
 
@@ -32,8 +19,8 @@ function love.load()
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
 	p1 = Player(love.graphics.newImage("res/sprite.png"), red, love.joystick.getJoysticks()[2],
-		{x = 200, y = 200, z = 50})
-	p2 = Player(love.graphics.newImage("res/sprite2.png"), green, _, {x = 300, y = 300, z = 50})
+		{x = 200, y = 200, z = 200})
+	p2 = Player(love.graphics.newImage("res/sprite2.png"), green, _, {x = 300, y = 300, y == 300})
 end
 
 function love.update(dt)
@@ -44,10 +31,10 @@ end
 
 function love.draw()
 	screen:apply()
-	draw_world()
+	world:draw()
 	p1:draw()
 	p2:draw()
-
+	p1:log()
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
 end
@@ -55,8 +42,4 @@ end
 function love.joystickpressed(joystick, button)
 	p1:joystickpressed(joystick, button)
 	p2:joystickpressed(joystick, button)
-end
-
-function draw_world()
-	deep:rectangleC({20, 80, 20}, "fill", 0, world.limitTop, 1, screenWidth, screenHeight)
 end

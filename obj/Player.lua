@@ -1,5 +1,6 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
+require "world"
 require "lib/deep"
 require "obj/Totem"
 
@@ -33,10 +34,10 @@ function Player:new(sprite, color, joystick, coords)
 
 	self.x, self.y, self.z = coords.x, coords.y, coords.z
 
-	self.w = self.sprite:getWidth()
-	self.h = self.sprite:getHeight()
-	self.ox = self.w / 2
-	self.oy = self.h * 0.75
+	self.width = self.sprite:getWidth()
+	self.height = self.sprite:getHeight()
+	self.ox = self.width / 2
+	self.oy = self.height * 0.75
 	self.sx, self.sy = 1, 1
 	self.r = 0
 	self.speed = Player.DEFAULT_SPEED
@@ -53,7 +54,7 @@ function Player:new(sprite, color, joystick, coords)
 	self.aim = {
 		x = self.x,
 		y = self.y,
-		z = 100,
+		z = world.maxZ,
 		radius = 10,
 		speed = Player.AIM_SPEED,
 		timer = 0,
@@ -64,7 +65,7 @@ function Player:new(sprite, color, joystick, coords)
 end
 
 function Player:draw()
-	deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
+	deep:queue(self.sprite, self.x, self.y, math.floor(self.z), math.rad(self.r), self.sx, self.sy,
 		self.ox, self.oy)
 	self:drawAim()
 	self:animate()
@@ -74,11 +75,9 @@ function Player:draw()
 end
 
 function Player:update(dt)
-	print(self.totems)
 	self:move(dt)
 	self:actions()
 	self:handleAim(dt)
-	print(#self.totems)
 	for _, v in pairs(self.totems) do
 		v:update(dt)
 	end
@@ -87,6 +86,11 @@ end
 function Player:move(dt)
 	self.x = self.x + self:getAxis(Player.AXIS_LX) * dt * self.speed
 	self.y = self.y + self:getAxis(Player.AXIS_LY) * dt * self.speed * Player.Y_MOVE_MOD
+	self.z = math.floor(self.y) + self.height
+end
+
+function Player:log()
+	love.graphics.print("\nx = "..self.x..", y = "..self.y..", z = "..self.z..", floor(z) = "..math.floor(self.z))
 end
 
 function Player:isMoving()
@@ -174,9 +178,13 @@ function Player:animate()
 
 end
 
+function randColor()
+	return {math.random(10, 255), math.random(10, 255), math.random(10, 255)}
+end
+
 function Player:actions()
 	if self:getButton(4) then
-		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y , z = 3 }, 70))
+		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y , z = self.aim.y }, 200, randColor()))
 		self.pressedButton = nil
 	end
 end
