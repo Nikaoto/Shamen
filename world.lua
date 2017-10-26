@@ -4,9 +4,6 @@ require "obj/Player"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1366
-screenHeight = 768
-isFullscreen = true
 
 world = {
 	limitTop = screenHeight*2/9,
