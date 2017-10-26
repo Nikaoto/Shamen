@@ -4,9 +4,9 @@ require "obj/Player"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1366
-screenHeight = 768
-isFullscreen = true
+screenWidth = 1200
+screenHeight = 600
+isFullscreen = false
 
 world = {
 	limitTop = screenHeight*2/9,
@@ -50,6 +50,11 @@ function love.draw()
 
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
+end
+
+function love.joystickpressed(joystick, button)
+	p1:joystickpressed(joystick, button)
+	p2:joystickpressed(joystick, button)
 end
 
 function draw_world()

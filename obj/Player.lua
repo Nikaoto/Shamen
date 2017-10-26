@@ -1,6 +1,7 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
 require "lib/deep"
+require "obj/Totem"
 
 Player = Object:extend()
 
@@ -22,6 +23,7 @@ Player.AIM_HIDE_INTERVAL = 2500
 function Player:new(sprite, color, joystick, coords)
 	self.sprite = sprite
 	self.joystick = joystick
+	self.totems = {}
 
 	if #color == 3 then
 		self.color = {color[1], color[2], color[3], 255}
@@ -66,12 +68,20 @@ function Player:draw()
 		self.ox, self.oy)
 	self:drawAim()
 	self:animate()
+	for k, v in pairs(self.totems) do
+		v:draw()
+	end
 end
 
 function Player:update(dt)
+	print(self.totems)
 	self:move(dt)
 	self:actions()
 	self:handleAim(dt)
+	print(#self.totems)
+	for _, v in pairs(self.totems) do
+		v:update(dt)
+	end
 end
 
 function Player:move(dt)
@@ -166,7 +176,8 @@ end
 
 function Player:actions()
 	if self:getButton(4) then
-		screen:setShake(world.shake)
+		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y , z = 3 }, 70))
+		self.pressedButton = nil
 	end
 end
 
@@ -182,9 +193,16 @@ function Player:getAxis(axisNum, deadzone)
 	end
 end
 
+function Player:joystickpressed(joystick, button)
+	if self.joystick and joystick == self.joystick then
+		self.pressedButton = button
+	end
+end
+
 function Player:getButton(buttonNum, ...)
 	if not self.joystick then return false end
-	return self.joystick:isDown(buttonNum, ...)
+
+	return self.pressedButton
 end
 
 -- Meta
