@@ -9,6 +9,7 @@ Player.AXIS_LY = 2
 Player.AXIS_RX = 4
 Player.AXIS_RY = 3
 Player.Y_MOVE_MOD = 0.85
+Player.DEFAULT_SPEED = 400
 
 Player.BTN_4 = 4
 Player.BTN_3 = 3
@@ -36,7 +37,7 @@ function Player:new(sprite, color, joystick, coords)
 	self.oy = self.h * 0.75
 	self.sx, self.sy = 1, 1
 	self.r = 0
-	self.speed = 400
+	self.speed = Player.DEFAULT_SPEED
 
 	self.anim = {
 		walk = {
@@ -58,27 +59,10 @@ function Player:new(sprite, color, joystick, coords)
 		color = {255, 255, 255},
 		shouldShow = false,
 	}
-
-	self.shader = love.graphics.newShader[[
-    extern vec4 mainColor; //Color to set
-    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ) {
-      //Getting current pixel color
-      vec4 pixel = Texel(texture, texture_coords );
-      pixel.r = mainColor.r;
-      pixel.g = mainColor.g;
-      pixel.b = mainColor.b;
-      return pixel * color;
-    }]]
-end
-
-function Player:updateShader()
-	self.shader:sendColor("mainColor", self.color)
 end
 
 function Player:draw()
-	self:updateShader()
-
-	deep:queueS(self.shader, self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
+	deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 		self.ox, self.oy)
 	self:drawAim()
 	self:animate()
