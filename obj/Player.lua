@@ -18,7 +18,7 @@ Player.BTN_1 = 1
 Player.AIM_SPEED = 1000
 Player.AIM_HIDE_INTERVAL = 2500
 
-function Player:new(sprite, color, joystick, x, y, z)
+function Player:new(sprite, color, joystick, coords)
 	self.sprite = sprite
 	self.joystick = joystick
 
@@ -28,7 +28,7 @@ function Player:new(sprite, color, joystick, x, y, z)
 		self.color = color
 	end
 
-	self.x, self.y, self.z = x, y, z
+	self.x, self.y, self.z = coords.x, coords.y, coords.z
 
 	self.w = self.sprite:getWidth()
 	self.h = self.sprite:getHeight()

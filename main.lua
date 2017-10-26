@@ -32,9 +32,9 @@ function love.load()
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
 	p1 = Player(love.graphics.newImage("res/sprite.png"), red, love.joystick.getJoysticks()[2],
-		100, 100, 50)
+		{x = 200, y = 200, z = 50})
 	p2 = Player(love.graphics.newImage("res/sprite.png"), green, _,
-		300, 300, 50)
+		{x = 300, y = 300, z = 50})
 end
 
 function love.update(dt)
