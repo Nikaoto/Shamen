@@ -30,7 +30,7 @@ function love.update(dt)
 	screen:update(dt)
 	p1:update(dt)
 	p2:update(dt)
-	ui:update({hp = 50, mp = 30}, { hp = 50 , mp = 30})
+	--ui:update({hp = 50, mp = 30}, { hp = 50 , mp = 30})
 end
 
 function love.draw()
