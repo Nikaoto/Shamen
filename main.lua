@@ -2,6 +2,7 @@ package.path = package.path .. ";../?.lua"
 
 require "obj/Player"
 require "lib/deep"
+require "ui"
 screen = require "lib/shack"
 
 local p1
@@ -27,6 +28,7 @@ function love.update(dt)
 	screen:update(dt)
 	p1:update(dt)
 	p2:update(dt)
+	ui:update({hp = 50, mp = 30}, { hp = 50 , mp = 30})
 end
 
 function love.draw()
@@ -37,6 +39,7 @@ function love.draw()
 	p1:log()
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
+	ui:draw()
 end
 
 function love.joystickpressed(joystick, button)
