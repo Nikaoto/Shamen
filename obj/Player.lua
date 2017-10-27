@@ -13,11 +13,12 @@ Player.AXIS_RY = 3
 Player.Y_MOVE_MOD = 0.85
 Player.DEFAULT_SPEED = 400
 
-Player.BTN_4 = 4
+Player.BTN_4 = 5
 Player.BTN_3 = 3
 Player.BTN_2 = 2
 Player.BTN_1 = 1
 
+Player.AIM_LIMIT_OFFSET = 15
 Player.AIM_SPEED = 1000
 Player.AIM_HIDE_INTERVAL = 2500
 
@@ -32,12 +33,14 @@ function Player:new(sprite, color, joystick, coords)
 		self.color = color
 	end
 
-	self.x, self.y, self.z = coords.x, coords.y, coords.z
-
 	self.width = self.sprite:getWidth()
 	self.height = self.sprite:getHeight()
+
+	self.x, self.y = coords.x, coords.y
+	self.z = math.floor(coords.y + self.height)
+
 	self.ox = self.width / 2
-	self.oy = self.height * 0.75
+	self.oy = self.height / 2
 	self.sx, self.sy = 1, 1
 	self.r = 0
 	self.speed = Player.DEFAULT_SPEED
@@ -65,13 +68,13 @@ function Player:new(sprite, color, joystick, coords)
 end
 
 function Player:draw()
-	deep:queue(self.sprite, self.x, self.y, math.floor(self.z), math.rad(self.r), self.sx, self.sy,
+	for _, v in pairs(self.totems) do
+		v:draw()
+	end
+	deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 		self.ox, self.oy)
 	self:drawAim()
 	self:animate()
-	for k, v in pairs(self.totems) do
-		v:draw()
-	end
 end
 
 function Player:update(dt)
@@ -84,13 +87,21 @@ function Player:update(dt)
 end
 
 function Player:move(dt)
-	self.x = self.x + self:getAxis(Player.AXIS_LX) * dt * self.speed
-	self.y = self.y + self:getAxis(Player.AXIS_LY) * dt * self.speed * Player.Y_MOVE_MOD
-	self.z = math.floor(self.y) + self.height
+	local nextX = self.x + self:getAxis(Player.AXIS_LX) * dt * self.speed
+	local nextY = self.y + self:getAxis(Player.AXIS_LY) * dt * self.speed * Player.Y_MOVE_MOD
+	
+	if nextX > world.limitLeft and nextX < world.limitRight then
+		self.x = nextX
+	end
+
+	if nextY > world.limitTop and nextY < world.limitBottom then
+		self.y = nextY
+		self.z = math.ceil(self.y + self.oy)
+	end
 end
 
 function Player:log()
-	love.graphics.print("\nx = "..self.x..", y = "..self.y..", z = "..self.z..", floor(z) = "..math.floor(self.z))
+	love.graphics.print("\nx = "..self.x..", y = "..self.y..", z = "..self.z)
 end
 
 function Player:isMoving()
@@ -117,10 +128,14 @@ function Player:handleAim(dt)
 			local nextX = self.aim.x + self:getAxis(Player.AXIS_RX) * self.aim.speed * dt
 			local nextY = self.aim.y + self:getAxis(Player.AXIS_RY) * self.aim.speed * dt * Player.Y_MOVE_MOD
 
-			-- TODO check collisions here
+			if nextX > world.limitLeft and nextX < world.limitRight then
+				self.aim.x = nextX
+			end
 
-			self.aim.x = nextX
-			self.aim.y = nextY
+			if nextY > world.limitTop + Player.AIM_LIMIT_OFFSET 
+				and nextY < world.limitBottom - Player.AIM_LIMIT_OFFSET then
+				self.aim.y = nextY
+			end
 		end
 	end
 end
@@ -184,8 +199,12 @@ end
 
 function Player:actions()
 	if self:getButton(Player.BTN_4) then
-		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y , z = self.aim.y }, 200, randColor()))
+		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor()))
 	end
+end
+
+function Player:getCoords()
+	return self.aim.x, self.aim.y
 end
 
 -- Joystick inputs

@@ -21,9 +21,9 @@ function love.load()
 	screen:setDimensions(screenWidth, screenHeight)
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
-	p1 = Player(love.graphics.newImage("res/sprite.png"), red, love.joystick.getJoysticks()[2],
-		{x = 200, y = 200, z = 200})
-	p2 = Player(love.graphics.newImage("res/sprite2.png"), green, _, {x = 300, y = 300, y == 300})
+	p1 = Player(love.graphics.newImage("res/sprite.png"), red, love.joystick.getJoysticks()[1],
+		{x = 200, y = 200})
+	p2 = Player(love.graphics.newImage("res/sprite2.png"), green, love.joystick.getJoysticks()[2], {x = 300, y = 300})
 end
 
 function love.update(dt)
@@ -39,6 +39,8 @@ function love.draw()
 	p1:draw()
 	p2:draw()
 	p1:log()
+	local x, y = p1:getCoords()
+	
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
 	ui:draw()
