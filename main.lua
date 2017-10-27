@@ -26,14 +26,12 @@ function love.load()
 	local joys = love.joystick.getJoysticks()
 	p1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
 	p2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 300, y = 300})
-	particle = Particle({x = 20,y = 20})
 end
 
 function love.update(dt)
 	screen:update(dt)
 	p1:update(dt)
 	p2:update(dt)
-	particle:update(dt)
 	ui:update(p1:getStats(), p2:getStats())
 end
 
@@ -42,7 +40,6 @@ function love.draw()
 	world:draw()
 	p1:draw()
 	p2:draw()
-	particle:draw()
 	local x, y = p1:getCoords()
 
 	love.graphics.print(love.timer.getFPS().." FPS")
