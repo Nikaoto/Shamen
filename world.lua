@@ -2,9 +2,9 @@ package.path = package.path .. ";../?.lua"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1000
-screenHeight = 500
-isFullscreen = false
+screenWidth = 1366
+screenHeight = 768
+isFullscreen = true
 
 world = {
 	limitTop = screenHeight*2/9,

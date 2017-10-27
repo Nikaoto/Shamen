@@ -144,6 +144,10 @@ function Player:clearDeadTotems()
 	end
 end
 
+function Player:activateSuper()
+	print(self.name .. " activated super")
+end
+
 function Player:takeDamage(amount)
 	self.hp = self.hp - amount
 	self:checkDeath()

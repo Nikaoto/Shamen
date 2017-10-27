@@ -7,9 +7,9 @@ require "obj/DestroyParticleSystem"
 
 Totem = Object:extend()
 
-Totem.WIDTH = 45
+Totem.WIDTH = 40
 Totem.HEIGHT = 50
-Totem.DEPTH = 50
+Totem.DEPTH = 45
 Totem.AREAL_Z = 2
 Totem.AREAL_SIZE_X = 150
 Totem.AREAL_SIZE_Y = 100
@@ -106,17 +106,22 @@ function Totem:update(dt)
 		-- Checking collisions with other totems
 		for _, totem in pairs(Player.allTotems) do
 			if tostring(totem) ~= tostring(self) then
-				if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox)
+				if (self.x + self.width >= totem.x and self.x <= totem.x + totem.width)
 					and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
 					and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
-					self.complete = true
-					if totem.name == self.name then
-						self:stack(totem)
-						print("STACK")
-					else
-						--self:destroy(true)
-						print("BREAK")
+					print(totem); print(self)
+					self:printPos()
+					if self.y < totem.y then
+						if totem.name == self.name then
+							
+							self:stackOnto(totem)
+							print("STACK")
+						else
+							--self:destroy(true)
+							print("BREAK")
+						end
 					end
+					self.complete = true
 				end
 			end
 		end
@@ -139,43 +144,39 @@ function Totem:update(dt)
 	end
 end
 
-function Totem:stack(totem)
-	if not self.totemBelow then
-		self.stacked = true
-		self.stackIndex = 1
-		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
-		self.y = totem.y - self.height
-		self.totemBelow = totem
-		self.partsys:emit(40)
-	else
-		local i = 1
-		local obj = self
-		while true do
-			i = i + 1
-			if not obj.totemBelow then
-				break
+function Totem:printPos()
+	print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z)
+end
+
+function Totem:stackOnto(totem)
+	--print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z)
+	if totem.totemAbove then
+		if totem.totemAbove.stackIndex < Totem.MAX_STACKED_TOTEMS then
+			self:stackOnto(totem.totemAbove)
+			return
+		else
+			if self.name == player1.name then
+				player1:activateSuper()
 			else
-				obj = obj.totemBelow
-			end
-		end
-
-		self.stackIndex = i
-		print(self.stackIndex)
-
-		if self.stackIndex <= Totem.MAX_STACKED_TOTEMS and self.stackIndex ~= 1 then
-			self.stacked = true
-			self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
-			self.y = totem.y - self.height
-			self.totemBelow = totem
-			self.partsys:emit(40)
+				player2:activateSuper()
+			end 
 		end
 	end
---[[elseif not totem.stacked then
-	totem.stacked = true
-	totem.partsys = StackParticleSystem({ x = self.x + self.ox , y = self.y}) --TODO change here (rm totem.oy)
-	totem.y = self.y - self.height
-	totem.totemBelow = self
-	totem.partsys:emit(40)--]]
+
+	if not self.totemBelow then
+		if totem.stackIndex == nil then totem.stackIndex = 1 end
+		self.stackIndex = totem.stackIndex + 1
+		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
+		self.y = totem.y - self.height
+		totem.totemAbove = self
+		self.totemBelow = totem
+		self.partsys:emit(40)
+	end
+
+	if self.stackIndex == Totem.MAX_STACKED_TOTEMS then
+		self.superMode = true
+	end
+	print(self.stackIndex)
 end
 
 function Totem:animate()
