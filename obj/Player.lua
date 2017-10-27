@@ -16,8 +16,10 @@ Player.DEFAULT_SPEED = 400
 Player.BTN_4 = 5
 Player.BTN_3 = 3
 Player.BTN_2 = 2
-Player.BTN_1 = 1
+Player.BTN_1 = 4
 
+Player.HP_DEFAULT = 100
+Player.MP_DEFAULT = 100
 Player.AIM_LIMIT_OFFSET = 15
 Player.AIM_SPEED = 1000
 Player.AIM_HIDE_INTERVAL = 2500
@@ -25,6 +27,11 @@ Player.AIM_HIDE_INTERVAL = 2500
 function Player:new(sprite, color, joystick, coords)
 	self.sprite = sprite
 	self.joystick = joystick
+
+	self.speed = Player.DEFAULT_SPEED
+	self.hp = Player.HP_DEFAULT
+	self.mp = Player.MP_DEFAULT
+
 	self.totems = {}
 
 	if #color == 3 then
@@ -43,7 +50,7 @@ function Player:new(sprite, color, joystick, coords)
 	self.oy = self.height / 2
 	self.sx, self.sy = 1, 1
 	self.r = 0
-	self.speed = Player.DEFAULT_SPEED
+	
 
 	self.anim = {
 		walk = {
@@ -98,6 +105,10 @@ function Player:move(dt)
 		self.y = nextY
 		self.z = math.ceil(self.y + self.oy)
 	end
+end
+
+function Player:getStats()
+	return {hp = self.hp, mp = self.mp}
 end
 
 function Player:log()

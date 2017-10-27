@@ -63,11 +63,17 @@ function ui:update(player, player2)
 end
 
 function updatePlayerOne(playerOne)
+  if playerOne.hp < 0 then playerOne.hp = 0 end
+  if playerOne.mp < 0 then playerOne.mp = 0 end
+
   ui.playerOneHealthBarWidth = playerOne.hp * 2
   ui.playerOneManaBarWidth = playerOne.mp * 1.2
 end
 
 function updatePlayerTwo(playerTwo)
+  if playerTwo.hp < 0 then playerTwo.hp = 0 end
+  if playerTwo.mp < 0 then playerTwo.mp = 0 end
+
   ui.HEALTH_BAR_PLAYER_TWO_X = ui.HEALTH_BAR_PLAYER_TWO_X + (ui.playerTwoHealthBarWidth - playerTwo.hp * 2)
   ui.playerTwoHealthBarWidth = playerTwo.hp * 2
   ui.MANA_BAR_PLAYER_TWO_X = ui.MANA_BAR_PLAYER_TWO_X + (ui.playerTwoManaBarWidth - playerTwo.mp * 1.2)
