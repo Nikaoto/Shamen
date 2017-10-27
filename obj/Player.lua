@@ -1,7 +1,6 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
 require "world"
-require "lib/deep"
 require "obj/Totem"
 
 Player = Object:extend()
@@ -81,6 +80,7 @@ function Player:draw()
 	for _, v in pairs(self.totems) do
 		v:draw()
 	end
+	deep:circle("fill", self.x, self.y, self.z + 1, 5)
 	deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 		self.ox, self.oy)
 	self:drawAim()
@@ -213,8 +213,8 @@ end
 
 function Player:actions()
 	if self:getButton(Player.BTN_4) then
-		local newTotem = Totem({ x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
-		Player.allTotems[""]
+		local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
+		table.insert(Player.allTotems, newTotem)
 		table.insert(self.totems, newTotem)
 	end
 end
