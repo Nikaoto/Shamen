@@ -1,7 +1,6 @@
 package.path = package.path .. ";../?.lua"
 
 require "obj/Player"
-require "obj/Particle"
 require "lib/deep"
 require "ui"
 screen = require "lib/shack"
