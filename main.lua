@@ -11,8 +11,10 @@ local p2
 local red = {255, 0, 0}
 local green = {0, 255, 0}
 
-function love.keypressed()
-	love.event.quit()
+function love.keypressed(key)
+	if key == "escape" then
+		love.event.quit()
+	end
 end
 
 function love.load()

@@ -183,9 +183,8 @@ function randColor()
 end
 
 function Player:actions()
-	if self:getButton(4) then
+	if self:getButton(Player.BTN_4) then
 		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y , z = self.aim.y }, 200, randColor()))
-		self.pressedButton = nil
 	end
 end
 
@@ -209,8 +208,11 @@ end
 
 function Player:getButton(buttonNum, ...)
 	if not self.joystick then return false end
+	if not self.pressedButton then return false end
 
-	return self.pressedButton
+	local temp = self.pressedButton
+	self.pressedButton = nil
+	return temp == buttonNum
 end
 
 -- Meta
