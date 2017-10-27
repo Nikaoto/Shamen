@@ -3,9 +3,11 @@ Object = require "lib/classic"
 
 DestroyParticleSystem = Object:extend()
 
+DestroyParticleSystem.EMIT_DEFAULT = 40
+
 function DestroyParticleSystem:new(coords)
   self.x , self.y = coords.x , coords.y
-	self.psystem = love.graphics.newParticleSystem(getBubble(25, {130, 82, 1}), 32)
+	self.psystem = love.graphics.newParticleSystem(getBubble(30, {130, 82, 1}), 32)
 	self.psystem:setSpeed(-210,210)
   self.psystem:setParticleLifetime(0.4, 0.6)
 	self.psystem:setSizeVariation(1)
@@ -24,11 +26,15 @@ function DestroyParticleSystem:update(dt)
 	self.psystem:update(dt)
 end
 
-function DestroyParticleSystem:emit(pN)
-  self.psystem:emit(pN)
+function DestroyParticleSystem:setPosition(coords)
+  self.x, self.y = coords.x, coords.y
 end
 
-function getBubble(size,color)
+function DestroyParticleSystem:emit(pN)
+  self.psystem:emit(pN or DestroyParticleSystem.EMIT_DEFAULT)
+end
+
+function getBubble(size, color)
   color = color or {124,104,255}
   local bubble = love.graphics.newCanvas(size, size)
   love.graphics.setCanvas(bubble)

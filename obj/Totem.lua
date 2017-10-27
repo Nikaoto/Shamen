@@ -3,6 +3,7 @@ Object = require "lib/classic"
 local tween = require "lib/tween"
 require "lib/deep"
 require "obj/StackParticleSystem"
+require "obj/DestroyParticleSystem"
 
 Totem = Object:extend()
 
@@ -16,6 +17,7 @@ Totem.DEFAULT_COLOR = {0, 255, 255}
 Totem.FALL_TIME = 0.08
 Totem.SHAKE_AMOUNT = 20
 Totem.DAMAGE_AMOUNT = 15
+Totem.MAX_STACKED_TOTEMS = 4
 
 function Totem:new(name, coords, areal, color)
 	self.name = name
@@ -32,25 +34,9 @@ function Totem:new(name, coords, areal, color)
 	self.startY = coords.y - screenHeight
 	self.endY = coords.y - self.height
 	self.x , self.y , self.z = coords.x - self.ox , self.startY , math.floor(coords.z)
-	--self.destroyPartSys = 
+	self.destroyPartSys = DestroyParticleSystem({x = self.x, y = self.y})
 	self.endZ = math.ceil(self.endY + self.height)
 	self.tween = tween.new(Totem.FALL_TIME, self, { y = self.endY }, tween.easing.expoIn)
-end
-
-function Totem:stack(totem)
-	if not self.stacked then
-		self.stacked = true
-		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
-		self.y = totem.y - self.height
-		self.totemBelow = totem
-		self.partsys:emit(40)
-	elseif not totem.stacked then
-		totem.stacked = true
-		totem.partsys = StackParticleSystem({ x = self.x + self.ox , y = self.y}) --TODO change here (rm totem.oy)
-		totem.y = self.y - self.height
-		totem.totemBelow = self
-		totem.partsys:emit(40)
-	end
 end
 
 function Totem:hitShaman(shaman)
@@ -60,8 +46,8 @@ end
 
 function Totem:destroy(shouldEmitParticles)
 	if shouldEmitParticles then
-		print("PARTEMIT")
-		--emit destroy particles
+		self.destroyPartSys:setPosition({x = self.x + self.ox, y = self.y - self.oy})
+		self.destroyPartSys:emit(20)
 	end
 	print("Totem destroy")
 	self.dead = true
@@ -72,8 +58,15 @@ function Totem:log()
 end
 
 function Totem:drawPartSys()
-	if self.partsys and not self.dead then
-		self.partsys:draw()
+	if not self.dead then
+
+		if self.partsys then
+			self.partsys:draw()
+		end
+
+		if self.destroyPartSys then
+			self.destroyPartSys:draw()
+		end
 	end
 end
 
@@ -100,22 +93,28 @@ function Totem:update(dt)
 	end
 	self.z = math.ceil(self.y + self.height)
 
-	if self.partsys and not self.dead then
-		self.partsys:update(dt)
+	if not self.dead then
+		if self.partsys then
+			self.partsys:update(dt)
+		end
+		if self.destroyPartSys then
+			self.destroyPartSys:update(dt)
+		end
 	end
 
 	if not self.complete then
 		-- Checking collisions with other totems
 		for _, totem in pairs(Player.allTotems) do
-			if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox)
-				and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
-				and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
-				if tostring(totem) ~= tostring(self) then
+			if tostring(totem) ~= tostring(self) then
+				if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox)
+					and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
+					and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
+					self.complete = true
 					if totem.name == self.name then
-						self.complete = true
 						self:stack(totem)
 						print("STACK")
 					else
+						--self:destroy(true)
 						print("BREAK")
 					end
 				end
@@ -138,6 +137,45 @@ function Totem:update(dt)
 		self.shook = true
 		screen:setShake(Totem.SHAKE_AMOUNT)
 	end
+end
+
+function Totem:stack(totem)
+	if not self.totemBelow then
+		self.stacked = true
+		self.stackIndex = 1
+		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
+		self.y = totem.y - self.height
+		self.totemBelow = totem
+		self.partsys:emit(40)
+	else
+		local i = 1
+		local obj = self
+		while true do
+			i = i + 1
+			if not obj.totemBelow then
+				break
+			else
+				obj = obj.totemBelow
+			end
+		end
+
+		self.stackIndex = i
+		print(self.stackIndex)
+
+		if self.stackIndex <= Totem.MAX_STACKED_TOTEMS and self.stackIndex ~= 1 then
+			self.stacked = true
+			self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
+			self.y = totem.y - self.height
+			self.totemBelow = totem
+			self.partsys:emit(40)
+		end
+	end
+--[[elseif not totem.stacked then
+	totem.stacked = true
+	totem.partsys = StackParticleSystem({ x = self.x + self.ox , y = self.y}) --TODO change here (rm totem.oy)
+	totem.y = self.y - self.height
+	totem.totemBelow = self
+	totem.partsys:emit(40)--]]
 end
 
 function Totem:animate()
