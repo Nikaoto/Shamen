@@ -44,6 +44,7 @@ function Totem:checkFall(endZ)
 		if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox) 
 			and (endZ <= totem.z + totem.depth and endZ >= totem.z - totem.depth) then 
 			if totem.name == self.name then
+				Totem:stack()
 				print("STACK")
 			else
 				print("BREAK")
