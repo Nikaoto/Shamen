@@ -38,7 +38,6 @@ function love.draw()
 	world:draw()
 	p1:draw()
 	p2:draw()
-	p1:log()
 	local x, y = p1:getCoords()
 	
 	love.graphics.print(love.timer.getFPS().." FPS")

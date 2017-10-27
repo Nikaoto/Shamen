@@ -39,7 +39,7 @@ function Totem:draw()
   if self.complete then
     deep:ellipseC(self.color, "line", self.x + self.ox, self.y + self.oy, Totem.DEFAULT_AREAL_Z, self.areal, self.areal / 2)
   end
-  self:log()
+  --self:log()
 end
 
 function Totem:update(dt)
