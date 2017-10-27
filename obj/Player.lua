@@ -6,6 +6,8 @@ require "obj/Totem"
 
 Player = Object:extend()
 
+Player.allTotems = {}
+
 Player.AXIS_LX = 1
 Player.AXIS_LY = 2
 Player.AXIS_RX = 4
@@ -24,7 +26,8 @@ Player.AIM_LIMIT_OFFSET = 15
 Player.AIM_SPEED = 1000
 Player.AIM_HIDE_INTERVAL = 2500
 
-function Player:new(sprite, color, joystick, coords)
+function Player:new(name, sprite, color, joystick, coords)
+	self.name = name
 	self.sprite = sprite
 	self.joystick = joystick
 
@@ -210,7 +213,9 @@ end
 
 function Player:actions()
 	if self:getButton(Player.BTN_4) then
-		table.insert(self.totems, Totem({ x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor()))
+		local newTotem = Totem({ x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
+		Player.allTotems[""]
+		table.insert(self.totems, newTotem)
 	end
 end
 
