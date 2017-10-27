@@ -5,15 +5,16 @@ require "lib/deep"
 
 Totem = Object:extend()
 
-Totem.WIDTH = 50
-Totem.HEIGHT = 60
-Totem.DEPTH = 60
+Totem.WIDTH = 45
+Totem.HEIGHT = 50
+Totem.DEPTH = 50
 Totem.AREAL_Z = 2
 Totem.AREAL_SIZE_X = 150
 Totem.AREAL_SIZE_Y = 100
 Totem.DEFAULT_COLOR = {0, 255, 255}
 Totem.FALL_TIME = 0.08
 Totem.SHAKE_AMOUNT = 20
+Totem.DAMAGE_AMOUNT = 15
 
 function Totem:new(name, coords, areal, color)
 	self.name = name
@@ -37,7 +38,19 @@ function Totem:new(name, coords, areal, color)
 end
 
 function Totem:checkFall(endZ)
-	for playerNum, totem in pairs(Player.allTotems) do
+	--Check for player hit
+	if player1.name ~= self.name then
+		if player1:willCollideWith(self.x, self.ox, endZ, self.depth) then
+			self:hitShaman(player1)
+			print("SHAMAN BREAK")
+		end
+	elseif player2:willCollideWith(self.x, self.ox, endZ, self.depth) then
+		self:hitShaman(player2)
+		print("SHAMAN BREAK")
+	end
+
+	--Check for totem hit
+	for _, totem in pairs(Player.allTotems) do
 		if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox) 
 			and (endZ <= totem.z + totem.depth and endZ >= totem.z - totem.depth) then 
 			if totem.name == self.name then
@@ -46,6 +59,20 @@ function Totem:checkFall(endZ)
 				print("BREAK")
 			end
 		end
+	end
+end
+
+function Totem:hitShaman(player)
+	player:takeDamage(Totem.DAMAGE_AMOUNT)
+	self:destroy(true)
+	print("Totem destroy")
+end
+
+function Totem:destroy(shouldEmitParticles)
+	if shouldEmitParticles then
+		--emit destroy particles
+	else
+		--parent:removeTotem(self)
 	end
 end
 

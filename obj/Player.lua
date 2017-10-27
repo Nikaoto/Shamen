@@ -23,7 +23,7 @@ Player.HP_DEFAULT = 100
 Player.MP_DEFAULT = 100
 Player.AIM_LIMIT_OFFSET = 15
 Player.AIM_SPEED = 1000
-Player.AIM_HIDE_INTERVAL = 2500
+Player.AIM_HIDE_INTERVAL = 3000
 
 function Player:new(name, sprite, color, joystick, coords)
 	self.name = name
@@ -77,14 +77,18 @@ function Player:new(name, sprite, color, joystick, coords)
 end
 
 function Player:draw()
-	for _, v in pairs(self.totems) do
-		v:draw()
+	if not self.dead then
+		for _, v in pairs(self.totems) do
+			v:draw()
+		end
+		deep:circle("fill", self.x, self.y, self.z + 1, 5)
+		deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
+			self.ox, self.oy)
+		self:drawAim()
+		self:animate()
+	else
+		deep:printC(self.aim.color, "RIP", self.x, self.y, self.z)
 	end
-	deep:circle("fill", self.x, self.y, self.z + 1, 5)
-	deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
-		self.ox, self.oy)
-	self:drawAim()
-	self:animate()
 end
 
 function Player:update(dt)
@@ -107,6 +111,28 @@ function Player:move(dt)
 	if nextY > world.limitTop and nextY < world.limitBottom then
 		self.y = nextY
 		self.z = math.ceil(self.y + self.oy)
+	end
+end
+
+-- Used to detect totem fall collision
+function Player:willCollideWith(x, ox, z, depth)
+	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox) 
+		and (self.z <= z + depth and self.z >= z - depth)
+end
+
+function Player:removeTotem(totem)
+	table.remove(self.totems, totem)
+	table.remove(Player.allTotems, totem)
+end
+
+function Player:takeDamage(amount)
+	self.hp = self.hp - amount
+	self:checkDeath()
+end
+
+function Player:checkDeath()
+	if self.hp <= 0 then
+		self.dead = true 
 	end
 end
 
