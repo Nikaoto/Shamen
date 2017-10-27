@@ -14,9 +14,11 @@ ui.HEALTH_BAR_HEIGHT = 20
 ui.MANA_BAR_HEIGHT = 10
 
 -- height , width
+ui.ORIGIN_HEALTH_BAR_WIDTH = 200
 ui.playerOneHealthBarWidth = 200
 ui.playerTwoHealthBarWidth = 200
 
+ui.ORIGIN_MANA_BAR_WIDTH = 120
 ui.playerOneManaBarWidth = 120
 ui.playerTwoManaBarWidth = 120
 
@@ -66,16 +68,16 @@ function updatePlayerOne(playerOne)
   if playerOne.hp < 0 then playerOne.hp = 0 end
   if playerOne.mp < 0 then playerOne.mp = 0 end
 
-  ui.playerOneHealthBarWidth = playerOne.hp * 2
-  ui.playerOneManaBarWidth = playerOne.mp * 1.2
+  ui.playerOneHealthBarWidth = playerOne.hp * (ui.ORIGIN_HEALTH_BAR_WIDTH/100)
+  ui.playerOneManaBarWidth = playerOne.mp * (ui.ORIGIN_MANA_BAR_WIDTH/100)
 end
 
 function updatePlayerTwo(playerTwo)
   if playerTwo.hp < 0 then playerTwo.hp = 0 end
   if playerTwo.mp < 0 then playerTwo.mp = 0 end
 
-  ui.HEALTH_BAR_PLAYER_TWO_X = ui.HEALTH_BAR_PLAYER_TWO_X + (ui.playerTwoHealthBarWidth - playerTwo.hp * 2)
+  ui.HEALTH_BAR_PLAYER_TWO_X = ui.HEALTH_BAR_PLAYER_TWO_X + (ui.playerTwoHealthBarWidth - playerTwo.hp * (ui.ORIGIN_HEALTH_BAR_WIDTH/100))
   ui.playerTwoHealthBarWidth = playerTwo.hp * 2
-  ui.MANA_BAR_PLAYER_TWO_X = ui.MANA_BAR_PLAYER_TWO_X + (ui.playerTwoManaBarWidth - playerTwo.mp * 1.2)
+  ui.MANA_BAR_PLAYER_TWO_X = ui.MANA_BAR_PLAYER_TWO_X + (ui.playerTwoManaBarWidth - playerTwo.mp * (ui.ORIGIN_MANA_BAR_WIDTH/100))
   ui.playerTwoManaBarWidth = playerTwo.mp * 1.2
 end
