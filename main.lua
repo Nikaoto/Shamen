@@ -36,8 +36,7 @@ function love.draw()
 	world:draw()
 	player1:draw()
 	player2:draw()
-	local x, y = player1:getCoords()
-	
+
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
 	ui:draw()
