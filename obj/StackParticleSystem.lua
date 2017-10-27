@@ -22,6 +22,10 @@ function StackParticleSystem:update(dt)
 	self.psystem:update(dt)
 end
 
+function StackParticleSystem:emit(n)
+  self.psystem:emit(n)
+end
+
 function getBubble(size,color)
   color = color or {124,104,255}
   local bubble = love.graphics.newCanvas(size, size)

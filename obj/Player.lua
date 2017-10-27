@@ -92,11 +92,13 @@ function Player:draw()
 end
 
 function Player:update(dt)
-	self:move(dt)
-	self:actions()
-	self:handleAim(dt)
-	for _, v in pairs(self.totems) do
-		v:update(dt)
+	if not self.dead then
+		self:move(dt)
+		self:actions()
+		self:handleAim(dt)
+		for _, v in pairs(self.totems) do
+			v:update(dt)
+		end
 	end
 	self:clearDeadTotems()
 end
@@ -119,6 +121,12 @@ end
 function Player:willCollideWith(x, ox, z, depth)
 	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox) 
 		and (self.z <= z + depth and self.z >= z - depth)
+end
+
+function Player:drawPartSys()
+	for _, totem in pairs(self.totems) do
+		totem:drawPartSys()
+	end
 end
 
 function Player:clearDeadTotems()
@@ -250,7 +258,7 @@ end
 
 function Player:actions()
 	if self:getButton(Player.BTN_4) then
-		local newTotem = Totem(self, self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
+		local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
 		table.insert(Player.allTotems, newTotem)
 		table.insert(self.totems, newTotem)
 	end

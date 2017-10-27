@@ -41,6 +41,8 @@ function love.draw()
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
 	ui:draw()
+	player1:drawPartSys()
+	player2:drawPartSys()
 end
 
 function love.joystickpressed(joystick, button)
