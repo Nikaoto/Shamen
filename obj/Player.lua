@@ -98,6 +98,7 @@ function Player:update(dt)
 	for _, v in pairs(self.totems) do
 		v:update(dt)
 	end
+	self:clearDeadTotems()
 end
 
 function Player:move(dt)
@@ -120,9 +121,19 @@ function Player:willCollideWith(x, ox, z, depth)
 		and (self.z <= z + depth and self.z >= z - depth)
 end
 
-function Player:removeTotem(totem)
-	table.remove(self.totems, totem)
-	table.remove(Player.allTotems, totem)
+function Player:clearDeadTotems()
+	local temp1 = {}
+	for k, v in pairs(self.totems) do
+		if v.dead then
+			table.remove(self.totems, k)
+		end
+	end
+
+	for k, v in pairs(Player.allTotems) do
+		if v.dead then
+			table.remove(Player.allTotems, k)
+		end
+	end
 end
 
 function Player:takeDamage(amount)
@@ -239,7 +250,7 @@ end
 
 function Player:actions()
 	if self:getButton(Player.BTN_4) then
-		local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
+		local newTotem = Totem(self, self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
 		table.insert(Player.allTotems, newTotem)
 		table.insert(self.totems, newTotem)
 	end

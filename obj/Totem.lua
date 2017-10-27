@@ -16,7 +16,8 @@ Totem.FALL_TIME = 0.08
 Totem.SHAKE_AMOUNT = 20
 Totem.DAMAGE_AMOUNT = 15
 
-function Totem:new(name, coords, areal, color)
+function Totem:new(parent, name, coords, areal, color)
+	self.parent = parent
 	self.name = name
 	self.arealX = Totem.AREAL_SIZE_X
 	self.arealY = Totem.AREAL_SIZE_Y
@@ -37,19 +38,8 @@ function Totem:new(name, coords, areal, color)
 	self:checkFall(endZ)
 end
 
+--Check for totem hit
 function Totem:checkFall(endZ)
-	--Check for player hit
-	if player1.name ~= self.name then
-		if player1:willCollideWith(self.x, self.ox, endZ, self.depth) then
-			self:hitShaman(player1)
-			print("SHAMAN BREAK")
-		end
-	elseif player2:willCollideWith(self.x, self.ox, endZ, self.depth) then
-		self:hitShaman(player2)
-		print("SHAMAN BREAK")
-	end
-
-	--Check for totem hit
 	for _, totem in pairs(Player.allTotems) do
 		if (self.x + self.ox >= totem.x - totem.ox and self.x - self.ox <= totem.x + totem.ox) 
 			and (endZ <= totem.z + totem.depth and endZ >= totem.z - totem.depth) then 
@@ -62,18 +52,18 @@ function Totem:checkFall(endZ)
 	end
 end
 
-function Totem:hitShaman(player)
-	player:takeDamage(Totem.DAMAGE_AMOUNT)
+function Totem:hitShaman(shaman)
+	shaman:takeDamage(Totem.DAMAGE_AMOUNT)
 	self:destroy(true)
-	print("Totem destroy")
 end
 
 function Totem:destroy(shouldEmitParticles)
 	if shouldEmitParticles then
+		print("PARTEMIT")
 		--emit destroy particles
-	else
-		--parent:removeTotem(self)
 	end
+	print("Totem destroy")
+	self.dead = true
 end
 
 function Totem:log()
@@ -89,21 +79,17 @@ function Totem:draw()
 	--self:log()
 end
 
-function Totem:getPosition()
-	--TODO change after adding sprite and drawing with OX and OY in deep:queue
-	return self.x + self.ox, self.y + self.oy, self.z
-end
-
-function Totem:getSize()
-	return self.width, self.height, self.depth
-end
-
 function Totem:update(dt)
 	self.complete = self.tween:update(dt)
 	self.z = math.floor(self.y + self.height)
 	if self.complete and not self.shook then
-		screen:setShake(Totem.SHAKE_AMOUNT)
+		if player1:willCollideWith(self.x, self.ox, self.z, self.depth) then
+			self:hitShaman(player1)
+		elseif player2:willCollideWith(self.x, self.ox, self.z, self.depth) then
+			self:hitShaman(player2)
+		end
 		self.shook = true
+		screen:setShake(Totem.SHAKE_AMOUNT)
 	end
 end
 
@@ -116,3 +102,13 @@ end
 -- setter / getters
 function Totem:setAreal()
 end
+
+function Totem:getPosition()
+	--TODO change after adding sprite and drawing with OX and OY in deep:queue
+	return self.x + self.ox, self.y + self.oy, self.z
+end
+
+function Totem:getSize()
+	return self.width, self.height, self.depth
+end
+
