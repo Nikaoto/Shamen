@@ -85,9 +85,9 @@ ui.playerArray = { ui.p1, ui.p2 }
 
 -- Totem sprite images
 ui.fireTotemSprite = love.graphics.newImage("res/totem_fire.png")
-ui.windTotemSprite = love.graphics.newImage("res/totem_fire.png")
-ui.creepTotemSprite = love.graphics.newImage("res/totem_fire.png")
-ui.rootTotemSprite = love.graphics.newImage("res/totem_fire.png")
+ui.windTotemSprite = love.graphics.newImage("res/totem_wind.png")
+ui.creepTotemSprite = love.graphics.newImage("res/totem_creep.png")
+ui.rootTotemSprite = love.graphics.newImage("res/totem_root.png")
 
 
 --colors
@@ -154,21 +154,21 @@ function ui:draw()
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.draw(ui.fireTotemSprite, ui.p1.FIRE_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
                      ui.fireTotemSprite:getWidth() / 2, ui.fireTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p1.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-                     ui.fireTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p1.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-                    ui.fireTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p1.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-                     ui.fireTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.windTotemSprite, ui.p1.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                     ui.windTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.creepTotemSprite, ui.p1.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                    ui.creepTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.rootTotemSprite, ui.p1.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                     ui.rootTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
   -- p2
   love.graphics.draw(ui.fireTotemSprite, ui.p2.FIRE_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
                      ui.fireTotemSprite:getWidth() / 2, ui.fireTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p2.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-        ui.fireTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p2.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-        ui.fireTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
-  love.graphics.draw(ui.fireTotemSprite, ui.p2.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
-        ui.fireTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.windTotemSprite, ui.p2.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.windTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.creepTotemSprite, ui.p2.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.creepTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.rootTotemSprite, ui.p2.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.rootTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
   -- arcs
   -- Player 1
   love.graphics.setColor( 255, 255, 0 , ui.ARC_DEFAULT_ALPHA)

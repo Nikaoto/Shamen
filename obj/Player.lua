@@ -276,9 +276,25 @@ end
 
 function Player:dropTotem(totemIndex)
 	if self.mp >= Totem.MANA_COST then
+		ui:onTotemUse(tonumber(self.name), totemIndex)
 		if totemIndex == 1 then
 			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-				self:totemColor(totemIndex), love.graphics.newImage("res/totem_fire.png"))
+				self:totemColor(totemIndex), ui.fireTotemSprite)
+			table.insert(Player.allTotems, newTotem)
+			table.insert(self.totems, newTotem)
+		elseif totemIndex == 2 then
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+				self:totemColor(totemIndex), ui.windTotemSprite)
+			table.insert(Player.allTotems, newTotem)
+			table.insert(self.totems, newTotem)
+		elseif totemIndex == 3 then
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+				self:totemColor(totemIndex), ui.creepTotemSprite)
+			table.insert(Player.allTotems, newTotem)
+			table.insert(self.totems, newTotem)
+		elseif totemIndex == 4 then
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+				self:totemColor(totemIndex), ui.rootTotemSprite)
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		else
