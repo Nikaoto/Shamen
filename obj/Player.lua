@@ -2,6 +2,7 @@ package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
 require "world"
 require "obj/Totem"
+require "obj/FireTotem"
 
 Player = Object:extend()
 
@@ -55,7 +56,7 @@ function Player:new(name, sprite, color, joystick, coords)
 	self.oy = self.height / 2
 	self.sx, self.sy = 1, 1
 	self.r = 0
-	
+
 
 	self.anim = {
 		walk = {
@@ -109,7 +110,7 @@ end
 function Player:move(dt)
 	local nextX = self.x + self:getAxis(Player.AXIS_LX) * dt * self.speed
 	local nextY = self.y + self:getAxis(Player.AXIS_LY) * dt * self.speed * Player.Y_MOVE_MOD
-	
+
 	if nextX > world.limitLeft and nextX < world.limitRight then
 		self.x = nextX
 	end
@@ -141,7 +142,7 @@ end
 
 -- Used to detect totem fall collision
 function Player:willCollideWith(x, ox, z, depth)
-	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox) 
+	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox)
 		and (self.z <= z + depth and self.z >= z - depth)
 end
 
@@ -185,7 +186,7 @@ end
 
 function Player:checkDeath()
 	if self.hp <= 0 then
-		self.dead = true 
+		self.dead = true
 	end
 end
 
@@ -214,7 +215,7 @@ function Player:handleAim(dt)
 			self.aim.x = nextX
 		end
 
-		if nextY > world.limitTop + Player.AIM_LIMIT_OFFSET 
+		if nextY > world.limitTop + Player.AIM_LIMIT_OFFSET
 			and nextY < world.limitBottom - Player.AIM_LIMIT_OFFSET then
 			self.aim.y = nextY
 		end
@@ -276,29 +277,13 @@ end
 
 function Player:dropTotem(totemIndex)
 	if self.mp >= Totem.MANA_COST then
-		ui:onTotemUse(tonumber(self.name), totemIndex)
 		if totemIndex == 1 then
-			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-				self:totemColor(totemIndex), ui.fireTotemSprite)
-			table.insert(Player.allTotems, newTotem)
-			table.insert(self.totems, newTotem)
-		elseif totemIndex == 2 then
-			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-				self:totemColor(totemIndex), ui.windTotemSprite)
-			table.insert(Player.allTotems, newTotem)
-			table.insert(self.totems, newTotem)
-		elseif totemIndex == 3 then
-			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-				self:totemColor(totemIndex), ui.creepTotemSprite)
-			table.insert(Player.allTotems, newTotem)
-			table.insert(self.totems, newTotem)
-		elseif totemIndex == 4 then
-			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-				self:totemColor(totemIndex), ui.rootTotemSprite)
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
+				self:totemColor(totemIndex), love.graphics.newImage("res/totem_fire.png"))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		else
-			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
 				self:totemColor(totemIndex))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
@@ -345,8 +330,8 @@ function Player:joystickpressed(joystick, button)
 	end
 end
 
-function Player:isPressingAnyButton() 
-	for k, v in pairs(Player.controls) do 
+function Player:isPressingAnyButton()
+	for k, v in pairs(Player.controls) do
 		if self.joystick:isDown(v) then return true end
 	end
 
