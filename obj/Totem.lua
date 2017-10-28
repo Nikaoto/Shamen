@@ -82,8 +82,8 @@ function Totem:draw()
 end
 
 Totem.__tostringx = function (p)
-    Totem.__tostring = nil    
-    local s = "Totem " .. tostring(p)                                                                                                                                                                                                    
+    Totem.__tostring = nil
+    local s = "Totem " .. tostring(p)
     Totem.__tostring = Totem.__tostringx
     return s
 end
@@ -160,14 +160,14 @@ function Totem:stackOnto(totem)
 				player1:activateSuper()
 			else
 				player2:activateSuper()
-			end 
+			end
 		end
 	end
 
 	if not self.totemBelow then
 		if totem.stackIndex == nil then totem.stackIndex = 1 end
 		self.stackIndex = totem.stackIndex + 1
-		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
+		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y})
 		self.y = totem.y - self.height
 		self.z = totem.z
 		self.x = totem.x
@@ -200,4 +200,3 @@ end
 function Totem:getSize()
 	return self.width, self.height, self.depth
 end
-
