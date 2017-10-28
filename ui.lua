@@ -164,20 +164,31 @@ function ui:draw()
   for k, v in pairs(ui.p1.tweenArray) do
     if v and not v.complete then
       if k == 1 then
-        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X},ui.p1.fireTotemStartAngle,ui.p1.fireTotemEndAngle)
+        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.fireTotemStartAngle, ui.p1.fireTotemEndAngle)
+      elseif k == 2 then
+        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.windTotemStartAngle, ui.p1.windTotemEndAngle)
+      elseif k == 3 then
+        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.creepTotemStartAngle, ui.p1.creepTotemEndAngle)
+      elseif k == 4 then
+        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.rootTotemStartAngle, ui.p1.rootTotemEndAngle)
       end
     end
   end
 
   for k,v in pairs(ui.p2.tweenArray) do
-
+    if v and not v.complete then
+      if k == 1 then
+        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.fireTotemStartAngle, ui.p2.fireTotemEndAngle)
+      elseif k == 2 then
+        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.windTotemStartAngle, ui.p2.windTotemEndAngle)
+      elseif k == 3 then
+        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.creepTotemStartAngle, ui.p2.creepTotemEndAngle)
+      elseif k == 4 then
+        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.rootTotemStartAngle, ui.p2.rootTotemEndAngle)
+      end
+    end
   end
-  --Player 2
-  --love.graphics.arc( "fill", ui.p2.FIRE_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p2.fireTotemStartAngle, ui.p2.fireTotemEndAngle )
-  --love.graphics.arc( "fill", ui.p2.WIND_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p2.windTotemStartAngle, ui.p2.windTotemEndAngle )
-  --love.graphics.arc( "fill", ui.p2.CREEP_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p2.creepTotemStartAngle, ui.p2.creepTotemEndAngle )
-  --love.graphics.arc( "fill", ui.p2.ROOT_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p2.rootTotemStartAngle, ui.p2.rootTotemEndAngle )
-  --drawing totem sprites
+
   -- back to DEFAULT
   love.graphics.setColor(255, 255, 255, 255)
 end
@@ -232,14 +243,11 @@ function ui:onTotemUse(playerIndex, totemIndex)
   if totemIndex == 1 then
     currentPlayerTweenArray[1] = tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { fireTotemEndAngle = math.rad(1) })
   elseif totemIndex == 2 then
-    table.insert(currentPlayerTweenArray,
-                 tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { windTotemEndAngle = math.rad(1) }))
+    currentPlayerTweenArray[2] = tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { windTotemEndAngle = math.rad(1) })
   elseif totemIndex == 3 then
-    table.insert(currentPlayerTweenArray,
-                 tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { creepTotemEndAngle = math.rad(1) }))
+    currentPlayerTweenArray[3] = tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { creepTotemEndAngle = math.rad(1) })
   elseif totemIndex == 4 then
-    table.insert(currentPlayerTweenArray,
-                 tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { rootTotemEndAngle = math.rad(1) }))
+    currentPlayerTweenArray[4] = tween.new(ui.TOTEM_COOLDOWN_TIME, currentPlayer, { rootTotemEndAngle = math.rad(1) })
   end
 end
 
