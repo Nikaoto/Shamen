@@ -19,9 +19,12 @@ world.maxZ = world.limitBottom
 world.minZ = world.limitTop
 world.zRange = world.maxZ - world.minZ
 
+world.skyColor = {0, 172, 230}
+world.groundColor = {39, 159, 39}
+
 function world:draw()
-	deep:rectangleC({0, 191, 255}, "fill", 0, 0, 1, screenWidth, world.limitTop)
-	deep:rectangleC({0, 179, 45}, "fill", 0, world.limitTop, 1, screenWidth, screenHeight)
+	deep:rectangleC(world.skyColor, "fill", 0, 0, 1, screenWidth, world.limitTop)
+	deep:rectangleC(world.groundColor, "fill", 0, world.limitTop, 1, screenWidth, screenHeight)
 	for k, v in pairs(objectPool) do
 		if not v.shouldDestroy and v.draw ~= nil then
 			v:draw()

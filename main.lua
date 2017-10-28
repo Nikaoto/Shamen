@@ -37,7 +37,7 @@ function love.draw()
 	screen:apply()
 	player1:draw()
 	player2:draw()
-
+	
 	love.graphics.print(love.timer.getFPS().." FPS")
 	deep:draw()
 	ui:draw()
