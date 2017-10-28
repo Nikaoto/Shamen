@@ -128,9 +128,14 @@ end
 
 function Player:inAreal(x, z, rx, ry)
 	if not ry then
-		return dist(self.x - self.ox, self.z, x, z) <= rx
+		return dist(self.x, self.z, x, z) <= rx
 	else
-		return dist(self.x, self.z, x - rx/4, z) + dist(self.x, self.z, x + rx/4, z) == rx
+		local c = rx/2
+		local left = dist(self.x, self.z, x - c, z) <= c
+		local mid = dist(self.x, self.z, x, z) <= c
+		local right = dist(self.x, self.z, x + c, z) <= c
+		print("left = " .. tostring(left), "mid = " .. tostring(mid), "right = " .. tostring(right))
+		return (left or mid or right)
 	end
 end
 
