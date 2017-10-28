@@ -102,7 +102,7 @@ end
 Totem.__tostring = Totem.__tostringx
 
 function Totem:update(dt)
-	print(player1:inAreal(self.x, self.z, self.arealX, self.arealY)
+	print(player1:inAreal(self.x, self.z, self.arealX, self.arealY))
 	if not self.complete then
 		self.complete = self.tween:update(dt)
 	end
