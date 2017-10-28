@@ -30,7 +30,7 @@ function love.update(dt)
 	world:update(dt)
 	player1:update(dt)
 	player2:update(dt)
-	ui:update(player1:getStats(), player2:getStats())
+	ui:update(player1:getStats(), player2:getStats(), dt)
 end
 
 function love.draw()
@@ -49,4 +49,5 @@ end
 function love.joystickpressed(joystick, button)
 	player1:joystickpressed(joystick, button)
 	player2:joystickpressed(joystick, button)
+	ui:onTotemUse(2,2)
 end
