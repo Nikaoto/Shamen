@@ -73,7 +73,7 @@ function Player:new(name, sprite, color, joystick, coords)
 		speed = Player.AIM_SPEED,
 		hideTime = 0,
 		hideInterval = Player.AIM_HIDE_INTERVAL,
-		color = {255, 255, 255},
+		color = {255, 255, 255, 200},
 		shouldShow = false,
 	}
 end
@@ -134,6 +134,7 @@ function Player:clearDeadTotems()
 	local temp1 = {}
 	for k, v in pairs(self.totems) do
 		if v.dead then
+			print("totem dead, removing")
 			table.remove(self.totems, k)
 		end
 	end
@@ -152,6 +153,13 @@ end
 function Player:takeDamage(amount)
 	self.hp = self.hp - amount
 	self:checkDeath()
+end
+
+function Player:drainMana(amount)
+	self.mp = self.mp - amount
+	if self.mp <= 0 then
+		self.mp = 0
+	end
 end
 
 function Player:checkDeath()
@@ -201,7 +209,7 @@ function Player:drawAim()
 	if self.aim.shouldShow then
 		local l = 35
 		local mod = 1/3
-		deep:ellipseC(self.aim.color, "line", self.aim.x, self.aim.y, self.aim.z,
+		deep:ellipseC(self.aim.color, "fill", self.aim.x, self.aim.y, self.aim.z,
 			self.aim.radius*2, self.aim.radius)
 		deep:setColor(self.color)
 		deep:line(self.aim.x, self.aim.y - l, self.aim.x, self.aim.y, self.aim.z + 1)
@@ -246,10 +254,20 @@ function Player:animate()
 end
 
 function Player:dropTotem(totemIndex)
-	local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
-		self:totemColor(totemIndex))
-	table.insert(Player.allTotems, newTotem)
-	table.insert(self.totems, newTotem)
+	if self.mp >= Totem.MANA_COST then
+		if totemIndex == 1 then
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+				self:totemColor(totemIndex), love.graphics.newImage("res/totem_fire.png"))
+			table.insert(Player.allTotems, newTotem)
+			table.insert(self.totems, newTotem)
+		else
+			local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+				self:totemColor(totemIndex))
+			table.insert(Player.allTotems, newTotem)
+			table.insert(self.totems, newTotem)
+		end
+		self:drainMana(Totem.MANA_COST)
+	end
 end
 
 function Player:totemColor(totemIndex)
