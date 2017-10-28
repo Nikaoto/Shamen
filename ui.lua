@@ -63,19 +63,19 @@ ui.p1.rootTotemEndAngle = math.rad(360)
 ui.p1.tweenArray = {}
 -- Player 2 totem clock properties
 ui.p2 = {}
-ui.p2.FIRE_TOTEM_X = ui.MANA_BAR_PLAYER_TWO_X + 30
+ui.p2.FIRE_TOTEM_X = ui.DEFAULT_PLAYER_TWO_AVATAR_POSITION_X - ( ui.avatarRadius + 30 )
 ui.p2.fireTotemStartAngle = math.rad(0)
 ui.p2.fireTotemEndAngle = math.rad(360)
 
-ui.p2.WIND_TOTEM_X = ui.p2.FIRE_TOTEM_X + ui.ARC_MARGIN
+ui.p2.WIND_TOTEM_X = ui.p2.FIRE_TOTEM_X - ui.ARC_MARGIN
 ui.p2.windTotemStartAngle = math.rad(0)
 ui.p2.windTotemEndAngle = math.rad(360)
 
-ui.p2.CREEP_TOTEM_X = ui.p2.WIND_TOTEM_X + ui.ARC_MARGIN
+ui.p2.CREEP_TOTEM_X = ui.p2.WIND_TOTEM_X - ui.ARC_MARGIN
 ui.p2.creepTotemStartAngle = math.rad(0)
 ui.p2.creepTotemEndAngle = math.rad(360)
 
-ui.p2.ROOT_TOTEM_X = ui.p2.CREEP_TOTEM_X + ui.ARC_MARGIN
+ui.p2.ROOT_TOTEM_X = ui.p2.CREEP_TOTEM_X - ui.ARC_MARGIN
 ui.p2.rootTotemStartAngle = math.rad(0)
 ui.p2.rootTotemEndAngle = math.rad(360)
 ui.p2.tweenArray = {}
@@ -85,6 +85,10 @@ ui.playerArray = { ui.p1, ui.p2 }
 
 -- Totem sprite images
 ui.fireTotemSprite = love.graphics.newImage("res/totem_fire.png")
+ui.windTotemSprite = love.graphics.newImage("res/totem_fire.png")
+ui.creepTotemSprite = love.graphics.newImage("res/totem_fire.png")
+ui.rootTotemSprite = love.graphics.newImage("res/totem_fire.png")
+
 
 --colors
 ui.AVATAR_CIRCLE_COLOR = {}
@@ -150,41 +154,50 @@ function ui:draw()
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.draw(ui.fireTotemSprite, ui.p1.FIRE_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
                      ui.fireTotemSprite:getWidth() / 2, ui.fireTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p1.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                     ui.fireTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p1.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                    ui.fireTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p1.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+                     ui.fireTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
   -- p2
   love.graphics.draw(ui.fireTotemSprite, ui.p2.FIRE_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
                      ui.fireTotemSprite:getWidth() / 2, ui.fireTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p2.WIND_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.fireTotemSprite:getWidth() / 2, ui.windTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p2.CREEP_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.fireTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
+  love.graphics.draw(ui.fireTotemSprite, ui.p2.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
+        ui.fireTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
   -- arcs
   -- Player 1
   love.graphics.setColor( 255, 255, 0 , ui.ARC_DEFAULT_ALPHA)
-  -- love.graphics.arc( "fill", ui.p1.FIRE_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p1.fireTotemStartAngle, ui.p1.fireTotemEndAngle )
-  -- love.graphics.arc( "fill", ui.p1.WIND_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p1.windTotemStartAngle, ui.p1.windTotemEndAngle )
-  -- love.graphics.arc( "fill", ui.p1.CREEP_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p1.creepTotemStartAngle, ui.p1.creepTotemEndAngle )
-  -- love.graphics.arc( "fill", ui.p1.ROOT_TOTEM_X, ui.ARC_Y, ui.ARC_DEFAULT_RADIUS, ui.p1.rootTotemStartAngle, ui.p1.rootTotemEndAngle )
 
   for k, v in pairs(ui.p1.tweenArray) do
     if v and not v.complete then
       if k == 1 then
         drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.fireTotemStartAngle, ui.p1.fireTotemEndAngle)
       elseif k == 2 then
-        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.windTotemStartAngle, ui.p1.windTotemEndAngle)
+        drawCooldownArc({ x = ui.p1.WIND_TOTEM_X}, ui.p1.windTotemStartAngle, ui.p1.windTotemEndAngle)
       elseif k == 3 then
-        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.creepTotemStartAngle, ui.p1.creepTotemEndAngle)
+        drawCooldownArc({ x = ui.p1.CREEP_TOTEM_X}, ui.p1.creepTotemStartAngle, ui.p1.creepTotemEndAngle)
       elseif k == 4 then
-        drawCooldownArc({ x = ui.p1.FIRE_TOTEM_X}, ui.p1.rootTotemStartAngle, ui.p1.rootTotemEndAngle)
+        drawCooldownArc({ x = ui.p1.ROOT_TOTEM_X}, ui.p1.rootTotemStartAngle, ui.p1.rootTotemEndAngle)
       end
     end
   end
 
-  for k,v in pairs(ui.p2.tweenArray) do
+  -- UPSIDE DOWN
+  for k, v in pairs(ui.p2.tweenArray) do
     if v and not v.complete then
       if k == 1 then
         drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.fireTotemStartAngle, ui.p2.fireTotemEndAngle)
       elseif k == 2 then
-        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.windTotemStartAngle, ui.p2.windTotemEndAngle)
+        drawCooldownArc({ x = ui.p2.WIND_TOTEM_X}, ui.p2.windTotemStartAngle, ui.p2.windTotemEndAngle)
       elseif k == 3 then
-        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.creepTotemStartAngle, ui.p2.creepTotemEndAngle)
+        drawCooldownArc({ x = ui.p2.CREEP_TOTEM_X}, ui.p2.creepTotemStartAngle, ui.p2.creepTotemEndAngle)
       elseif k == 4 then
-        drawCooldownArc({ x = ui.p2.FIRE_TOTEM_X}, ui.p2.rootTotemStartAngle, ui.p2.rootTotemEndAngle)
+        drawCooldownArc({ x = ui.p2.ROOT_TOTEM_X}, ui.p2.rootTotemStartAngle, ui.p2.rootTotemEndAngle)
       end
     end
   end
@@ -204,9 +217,9 @@ function ui:update(player, player2,dt)
           if k == 1 then
             ui.p1.fireTotemEndAngle = math.rad(360)
           elseif k == 2 then
-            ui.p1.creepTotemEndAngle = math.rad(360)
-          elseif k == 3 then
             ui.p1.windTotemEndAngle = math.rad(360)
+          elseif k == 3 then
+            ui.p1.creepTotemEndAngle = math.rad(360)
           elseif k == 4 then
             ui.p1.rootTotemEndAngle = math.rad(360)
           end
@@ -214,21 +227,18 @@ function ui:update(player, player2,dt)
       end
   end
 
+  -- UPSIDE DOWN
   for k, v in pairs(ui.p2.tweenArray) do
       if v then
-        local complete = v:update(dt)
-        if complete then
+        v.complete = v:update(dt)
+        if v.complete then
           if k == 1 then
-            ui.p2.fireTotemStartAngle = 0
             ui.p2.fireTotemEndAngle = math.rad(360)
           elseif k == 2 then
-            ui.p2.creepTotemStartAngle = 0
-            ui.p2.creepTotemEndAngle = math.rad(360)
-          elseif k == 3 then
-            ui.p2.windTotemStartAngle = 0
             ui.p2.windTotemEndAngle = math.rad(360)
+          elseif k == 3 then
+            ui.p2.creepTotemEndAngle = math.rad(360)
           elseif k == 4 then
-            ui.p2.rootTotemStartAngle = 0
             ui.p2.rootTotemEndAngle = math.rad(360)
           end
         end
