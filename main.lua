@@ -49,5 +49,6 @@ end
 function love.joystickpressed(joystick, button)
 	player1:joystickpressed(joystick, button)
 	player2:joystickpressed(joystick, button)
-	ui:onTotemUse(2,2)
+	ui:onTotemUse(1,3)
+	ui:onTotemUse(2,3)
 end
