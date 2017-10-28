@@ -93,7 +93,10 @@ function Totem:update(dt)
 	if not self.complete then
 		self.complete = self.tween:update(dt)
 	end
-	self.z = math.ceil(self.y + self.height)
+	
+	if not self.totemBelow then
+		self.z = math.ceil(self.y + self.height)
+	end
 
 	if not self.dead then
 		if self.partsys then
