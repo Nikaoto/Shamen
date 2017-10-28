@@ -14,15 +14,17 @@ Player.AXIS_RY = 3
 Player.Y_MOVE_MOD = 0.85
 Player.DEFAULT_SPEED = 400
 
-Player.BTN_4 = 5
-Player.BTN_3 = 3
-Player.BTN_2 = 2
-Player.BTN_1 = 4
+Player.controls = {
+	TOTEM_1 = 6,
+	TOTEM_2 = 5,
+	TOTEM_3 = 8,
+	TOTEM_4 = 7,
+}
 
 Player.HP_DEFAULT = 100
 Player.MP_DEFAULT = 100
 Player.AIM_LIMIT_OFFSET = 15
-Player.AIM_SPEED = 1000
+Player.AIM_SPEED = 800
 Player.AIM_HIDE_INTERVAL = 3000
 
 function Player:new(name, sprite, color, joystick, coords)
@@ -69,7 +71,7 @@ function Player:new(name, sprite, color, joystick, coords)
 		z = world.maxZ,
 		radius = 10,
 		speed = Player.AIM_SPEED,
-		timer = 0,
+		hideTime = 0,
 		hideInterval = Player.AIM_HIDE_INTERVAL,
 		color = {255, 255, 255},
 		shouldShow = false,
@@ -78,13 +80,13 @@ end
 
 function Player:draw()
 	if not self.dead then
+		self:drawAim()
 		for _, v in pairs(self.totems) do
 			v:draw()
 		end
 		deep:circle("fill", self.x, self.y, self.z + 1, 5)
 		deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 			self.ox, self.oy)
-		self:drawAim()
 		self:animate()
 	else
 		deep:printC(self.aim.color, "RIP", self.x, self.y, self.z)
@@ -94,7 +96,6 @@ end
 function Player:update(dt)
 	if not self.dead then
 		self:move(dt)
-		self:actions()
 		self:handleAim(dt)
 		for _, v in pairs(self.totems) do
 			v:update(dt)
@@ -172,41 +173,34 @@ function Player:isMoving()
 end
 
 function Player:handleAim(dt)
-	if self:getButton(Player.BTN_4, Player.BTN_3, Player.BTN_2, Player.BTN_1) then
+	if self:isPressingAnyButton() or self:isAiming() then
+		-- update timer
+		self.aim.hideTime = getTime() + self.aim.hideInterval
+
 		self.aim.shouldShow = true
-	else
-		if not self.aim.shouldShow then
-			self:resetAim()
+		local nextX = self.aim.x + self:getAxis(Player.AXIS_RX) * self.aim.speed * dt
+		local nextY = self.aim.y + self:getAxis(Player.AXIS_RY) * self.aim.speed * dt * Player.Y_MOVE_MOD
+
+		if nextX > world.limitLeft and nextX < world.limitRight then
+			self.aim.x = nextX
 		end
 
-		if not self:isAiming() then
-			if getTime() - self.aim.timer >= self.aim.hideInterval then
-				self.aim.shouldShow = false
-				self.aim.timer = getTime()
-			end
-		else
-			self.aim.shouldShow = true
-			self.aim.timer = getTime()
-
-			local nextX = self.aim.x + self:getAxis(Player.AXIS_RX) * self.aim.speed * dt
-			local nextY = self.aim.y + self:getAxis(Player.AXIS_RY) * self.aim.speed * dt * Player.Y_MOVE_MOD
-
-			if nextX > world.limitLeft and nextX < world.limitRight then
-				self.aim.x = nextX
-			end
-
-			if nextY > world.limitTop + Player.AIM_LIMIT_OFFSET 
-				and nextY < world.limitBottom - Player.AIM_LIMIT_OFFSET then
-				self.aim.y = nextY
-			end
+		if nextY > world.limitTop + Player.AIM_LIMIT_OFFSET 
+			and nextY < world.limitBottom - Player.AIM_LIMIT_OFFSET then
+			self.aim.y = nextY
 		end
+	end
+
+	if getTime() > self.aim.hideTime then
+		self.aim.shouldShow = false
+		self:resetAim()
 	end
 end
 
 function Player:drawAim()
-	local l = 35
-	local mod = 1/3
 	if self.aim.shouldShow then
+		local l = 35
+		local mod = 1/3
 		deep:ellipseC(self.aim.color, "line", self.aim.x, self.aim.y, self.aim.z,
 			self.aim.radius*2, self.aim.radius)
 		deep:setColor(self.color)
@@ -230,11 +224,6 @@ function Player:isAiming(deadzone)
 	end
 end
 
-function Player:setRotation(rot)
-	rot = rot or 0
-	self.r = rot
-end
-
 function Player:animate()
 	if self:isMoving() then
 		if getTime() - self.anim.walk.timer >= self.anim.walk.interval then
@@ -256,23 +245,26 @@ function Player:animate()
 
 end
 
-function randColor()
-	return {math.random(10, 255), math.random(10, 255), math.random(10, 255)}
+function Player:dropTotem(totemIndex)
+	local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
+		self:totemColor(totemIndex))
+	table.insert(Player.allTotems, newTotem)
+	table.insert(self.totems, newTotem)
 end
 
-function Player:actions()
-	if self:getButton(Player.BTN_4) then
-		local newTotem = Totem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, randColor())
-		table.insert(Player.allTotems, newTotem)
-		table.insert(self.totems, newTotem)
+function Player:totemColor(totemIndex)
+	if totemIndex == 1 then
+		return {255, 42, 0}
+	elseif totemIndex == 2 then
+		return {30, 144, 255}
+	elseif totemIndex == 3 then
+		return {139, 69, 19}
+	elseif totemIndex == 4 then
+		return {124, 252, 0}
 	end
 end
 
-function Player:getCoords()
-	return self.aim.x, self.aim.y
-end
-
--- Joystick inputs
+-- Joystick inputs --
 function Player:getAxis(axisNum, deadzone)
 	if not self.joystick then	return 0 end
 	deadzone = deadzone or 0
@@ -285,21 +277,33 @@ function Player:getAxis(axisNum, deadzone)
 end
 
 function Player:joystickpressed(joystick, button)
-	if self.joystick and joystick == self.joystick then
-		self.pressedButton = button
+	if self.joystick and tostring(joystick) == tostring(self.joystick) then
+		if button == Player.controls.TOTEM_1 then
+			self:dropTotem(1)
+		elseif button == Player.controls.TOTEM_2 then
+			self:dropTotem(2)
+		elseif button == Player.controls.TOTEM_3 then
+			self:dropTotem(3)
+		elseif button == Player.controls.TOTEM_4 then
+			self:dropTotem(4)
+		end
 	end
 end
 
-function Player:getButton(buttonNum, ...)
-	if not self.joystick then return false end
-	if not self.pressedButton then return false end
+function Player:isPressingAnyButton() 
+	for k, v in pairs(Player.controls) do 
+		if self.joystick:isDown(v) then return true end
+	end
 
-	local temp = self.pressedButton
-	self.pressedButton = nil
-	return temp == buttonNum
+	return false
 end
 
--- Meta
-function getTime()
-	return math.floor(love.timer.getTime() * 1000)
+-- Getters and setters --
+function Player:getCoords()
+	return self.aim.x, self.aim.y
+end
+
+function Player:setRotation(rot)
+	rot = rot or 0
+	self.r = rot
 end

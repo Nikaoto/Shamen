@@ -19,6 +19,7 @@ function love.load()
 	screen:setDimensions(screenWidth, screenHeight)
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
+
 	local joys = love.joystick.getJoysticks()
 	player1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
 	player2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 300, y = 300})
@@ -26,6 +27,7 @@ end
 
 function love.update(dt)
 	screen:update(dt)
+	world:update(dt)
 	player1:update(dt)
 	player2:update(dt)
 	ui:update(player1:getStats(), player2:getStats())
@@ -33,7 +35,6 @@ end
 
 function love.draw()
 	screen:apply()
-	world:draw()
 	player1:draw()
 	player2:draw()
 
@@ -42,6 +43,7 @@ function love.draw()
 	ui:draw()
 	player1:drawPartSys()
 	player2:drawPartSys()
+	world:draw()
 end
 
 function love.joystickpressed(joystick, button)

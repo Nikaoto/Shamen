@@ -1,21 +1,31 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
+require "world"
 
 DestroyParticleSystem = Object:extend()
 
-DestroyParticleSystem.EMIT_DEFAULT = 40
+DestroyParticleSystem.EMIT_DEFAULT = 30
+DestroyParticleSystem.COLOR_DEFAULT = {130, 82, 1}
+DestroyParticleSystem.SPAWN_TIME = 500
+DestroyParticleSystem.SIZE = 40
 
-function DestroyParticleSystem:new(coords)
+-- Use only with object pool
+function DestroyParticleSystem:new(coords, spawnTime, emmisionRate, size, color)
   self.x , self.y = coords.x , coords.y
-	self.psystem = love.graphics.newParticleSystem(getBubble(30, {130, 82, 1}), 32)
-	self.psystem:setSpeed(-210,210)
-  self.psystem:setParticleLifetime(0.4, 0.6)
+  self.spawnTime = spawnTime or DestroyParticleSystem.SPAWN_TIME
+  self.size = size or DestroyParticleSystem.SIZE
+	self.psystem = love.graphics.newParticleSystem(getBubble(self.size, color), 32)
+  self.emissionRate = emmisionRate or DestroyParticleSystem.EMIT_DEFAULT
+  --self.psystem:setEmissionRate(self.emissionRate)
+	self.psystem:setSpeed(-210, 210)
+  self.psystem:setParticleLifetime(0.3, self.spawnTime / 1000)
 	self.psystem:setSizeVariation(1)
 	self.psystem:setAreaSpread("normal",10,10)
 	self.psystem:setLinearAcceleration(0, 1000, 0, 2000)
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
   self.psystem:setRelativeRotation(true)
-  self.psystem:setRotation(0,270)
+  self.psystem:setRotation(0, 270)
+  self.timer = self.spawnTime + getTime()
 end
 
 function DestroyParticleSystem:draw()
@@ -23,7 +33,12 @@ function DestroyParticleSystem:draw()
 end
 
 function DestroyParticleSystem:update(dt)
-	self.psystem:update(dt)
+  if getTime() < self.timer then
+    self.psystem:update(dt)
+    self:emit()
+  else
+    self.shouldDestroy = true
+  end
 end
 
 function DestroyParticleSystem:setPosition(coords)
@@ -31,11 +46,14 @@ function DestroyParticleSystem:setPosition(coords)
 end
 
 function DestroyParticleSystem:emit(pN)
-  self.psystem:emit(pN or DestroyParticleSystem.EMIT_DEFAULT)
+  if not self.emitted then
+    self.emitted = true
+    self.psystem:emit(pN or self.emissionRate)
+  end
 end
 
 function getBubble(size, color)
-  color = color or {124,104,255}
+  color = color or DestroyParticleSystem.COLOR_DEFAULT
   local bubble = love.graphics.newCanvas(size, size)
   love.graphics.setCanvas(bubble)
   love.graphics.setColor(color)

@@ -9,7 +9,7 @@ Totem = Object:extend()
 
 Totem.WIDTH = 40
 Totem.HEIGHT = 50
-Totem.DEPTH = 45
+Totem.DEPTH = 50
 Totem.AREAL_Z = 2
 Totem.AREAL_SIZE_X = 150
 Totem.AREAL_SIZE_Y = 100
@@ -18,6 +18,7 @@ Totem.FALL_TIME = 0.08
 Totem.SHAKE_AMOUNT = 20
 Totem.DAMAGE_AMOUNT = 15
 Totem.MAX_STACKED_TOTEMS = 4
+Totem.ENEMY_STACK_DESTROY_COUNT = 2 --num of totems destroyed when dropping on stack
 
 function Totem:new(name, coords, areal, color)
 	self.name = name
@@ -34,7 +35,6 @@ function Totem:new(name, coords, areal, color)
 	self.startY = coords.y - screenHeight
 	self.endY = coords.y - self.height
 	self.x , self.y , self.z = coords.x - self.ox , self.startY , math.floor(coords.z)
-	self.destroyPartSys = DestroyParticleSystem({x = self.x, y = self.y})
 	self.endZ = math.ceil(self.endY + self.height)
 	self.tween = tween.new(Totem.FALL_TIME, self, { y = self.endY }, tween.easing.expoIn)
 end
@@ -44,10 +44,17 @@ function Totem:hitShaman(shaman)
 	self:destroy(true)
 end
 
-function Totem:destroy(shouldEmitParticles)
+function Totem:hitEnemyTotem(enemyTotem)
+	enemyTotem:destroy(true, enemyTotem.stackIndex - Totem.ENEMY_STACK_DESTROY_COUNT + 1)
+end
+
+-- Destroys totem (and totems under it until the lastIndexCount)
+function Totem:destroy(shouldEmitParticles, lastIndexCount)
 	if shouldEmitParticles then
-		self.destroyPartSys:setPosition({x = self.x + self.ox, y = self.y - self.oy})
-		self.destroyPartSys:emit(20)
+		table.insert(objectPool, DestroyParticleSystem({x = self.x + self.ox, y = self.y - self.oy}))
+	end
+	if lastIndexCount and self.stackIndex >= lastIndexCount then
+		self.totemBelow:destroy(true, lastIndexCount)
 	end
 	print("Totem destroy")
 	self.dead = true
@@ -59,13 +66,8 @@ end
 
 function Totem:drawPartSys()
 	if not self.dead then
-
 		if self.partsys then
 			self.partsys:draw()
-		end
-
-		if self.destroyPartSys then
-			self.destroyPartSys:draw()
 		end
 	end
 end
@@ -97,9 +99,6 @@ function Totem:update(dt)
 		if self.partsys then
 			self.partsys:update(dt)
 		end
-		if self.destroyPartSys then
-			self.destroyPartSys:update(dt)
-		end
 	end
 
 	if not self.complete then
@@ -109,14 +108,14 @@ function Totem:update(dt)
 				if (self.x + self.width >= totem.x and self.x <= totem.x + totem.width)
 					and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
 					and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
-					print(totem); print(self)
-					self:printPos()
+					--print(totem); print(self)
+					--self:printPos()
 					if self.y < totem.y then
 						if totem.name == self.name then
-							
 							self:stackOnto(totem)
 							print("STACK")
 						else
+							--totem:destroy()
 							--self:destroy(true)
 							print("BREAK")
 						end
@@ -149,7 +148,6 @@ function Totem:printPos()
 end
 
 function Totem:stackOnto(totem)
-	--print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z)
 	if totem.totemAbove then
 		if totem.totemAbove.stackIndex < Totem.MAX_STACKED_TOTEMS then
 			self:stackOnto(totem.totemAbove)
@@ -168,6 +166,8 @@ function Totem:stackOnto(totem)
 		self.stackIndex = totem.stackIndex + 1
 		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y}) --TODO change here (rm totem.oy)
 		self.y = totem.y - self.height
+		self.z = totem.z
+		self.x = totem.x
 		totem.totemAbove = self
 		self.totemBelow = totem
 		self.partsys:emit(40)
@@ -176,7 +176,7 @@ function Totem:stackOnto(totem)
 	if self.stackIndex == Totem.MAX_STACKED_TOTEMS then
 		self.superMode = true
 	end
-	print(self.stackIndex)
+	print("stackindex = " .. self.stackIndex)
 end
 
 function Totem:animate()
