@@ -20,7 +20,7 @@ Totem.DAMAGE_AMOUNT = 15
 Totem.MAX_STACKED_TOTEMS = 4
 Totem.ENEMY_STACK_DESTROY_COUNT = 2 --num of totems destroyed when dropping on stack
 Totem.colors = {{255, 42, 0}, {30, 144, 255}, {139, 69, 19}, {124, 252, 0}}
-Totem.MANA_COST = 10
+Totem.MANA_COST = 25
 
 function Totem:new(name, coords, areal, color, sprite)
 	self.name = name

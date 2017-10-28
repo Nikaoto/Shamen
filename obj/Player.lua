@@ -13,6 +13,7 @@ Player.AXIS_RX = 4
 Player.AXIS_RY = 3
 Player.Y_MOVE_MOD = 0.85
 Player.DEFAULT_SPEED = 400
+Player.MANA_REGEN = 15
 
 Player.controls = {
 	TOTEM_1 = 6,
@@ -21,8 +22,8 @@ Player.controls = {
 	TOTEM_4 = 7,
 }
 
-Player.HP_DEFAULT = 100
-Player.MP_DEFAULT = 100
+Player.MAX_HP = 100
+Player.MAX_MP = 100
 Player.AIM_LIMIT_OFFSET = 15
 Player.AIM_SPEED = 800
 Player.AIM_HIDE_INTERVAL = 3000
@@ -33,8 +34,8 @@ function Player:new(name, sprite, color, joystick, coords)
 	self.joystick = joystick
 
 	self.speed = Player.DEFAULT_SPEED
-	self.hp = Player.HP_DEFAULT
-	self.mp = Player.MP_DEFAULT
+	self.hp = Player.MAX_HP
+	self.mp = Player.MAX_MP
 
 	self.totems = {}
 
@@ -97,6 +98,7 @@ function Player:update(dt)
 	if not self.dead then
 		self:move(dt)
 		self:handleAim(dt)
+		self:regenMana(dt)
 		for _, v in pairs(self.totems) do
 			v:update(dt)
 		end
@@ -115,6 +117,12 @@ function Player:move(dt)
 	if nextY > world.limitTop and nextY < world.limitBottom then
 		self.y = nextY
 		self.z = math.ceil(self.y + self.oy)
+	end
+end
+
+function Player:regenMana(dt)
+	if self.mp <= Player.MAX_MP then
+		self.mp = self.mp + Player.MANA_REGEN * dt
 	end
 end
 
