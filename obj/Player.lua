@@ -126,6 +126,14 @@ function Player:regenMana(dt)
 	end
 end
 
+function Player:inAreal(x, z, rx, ry)
+	if not ry then
+		return dist(self.x - self.ox, self.z, x, z) <= rx
+	else
+		return dist(self.x, self.z, x - rx/4, z) + dist(self.x, self.z, x + rx/4, z) == rx
+	end
+end
+
 -- Used to detect totem fall collision
 function Player:willCollideWith(x, ox, z, depth)
 	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox) 

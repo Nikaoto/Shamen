@@ -2,9 +2,9 @@ package.path = package.path .. ";../?.lua"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1366
-screenHeight = 768
-isFullscreen = true
+screenWidth = 1000
+screenHeight = 500
+isFullscreen = false
 
 objectPool = {}
 
@@ -40,6 +40,14 @@ function world:update(dt)
 			v:update(dt)
 		end
 	end
+end
+
+function sq(a)
+	return a*a
+end
+
+function dist(x1, y1, x2, y2)
+	return math.sqrt(sq(x2-x1) + sq(y2-y1)) 
 end
 
 function getTime()

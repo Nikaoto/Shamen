@@ -11,8 +11,8 @@ Totem.WIDTH = 45
 Totem.HEIGHT = 55
 Totem.DEPTH = 55
 Totem.AREAL_Z = 2
-Totem.AREAL_SIZE_X = 150
-Totem.AREAL_SIZE_Y = 100
+Totem.AREAL_SIZE_X = 180
+Totem.AREAL_SIZE_Y = 120
 Totem.DEFAULT_COLOR = {0, 255, 255}
 Totem.FALL_TIME = 0.2
 Totem.SHAKE_AMOUNT = 20
@@ -102,6 +102,7 @@ end
 Totem.__tostring = Totem.__tostringx
 
 function Totem:update(dt)
+	print(player1:inAreal(self.x, self.z, self.arealX, self.arealY)
 	if not self.complete then
 		self.complete = self.tween:update(dt)
 	end
