@@ -1,5 +1,5 @@
 package.path = package.path .. ";../?.lua"
-
+require "welcomescreen"
 require "obj/Player"
 
 require "ui"
@@ -7,6 +7,8 @@ require "sound"
 require "lib/deep"
 screen = require "lib/shack"
 
+
+gameStart = false
 local red = {255, 0, 0}
 local green = {0, 255, 0}
 local blue = {0, 0, 255}
@@ -21,36 +23,49 @@ function love.load()
 	screen:setDimensions(screenWidth, screenHeight)
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
-
 	sound:load()
+	loadWelcomeScreen()
+end
 
+function startGame()
 	local joys = love.joystick.getJoysticks()
 	player1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
 	player2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 800, y = 200})
+	gameStart = true
 end
 
 function love.update(dt)
-	screen:update(dt)
-	world:update(dt)
-	player1:update(dt)
-	player2:update(dt)
-	ui:update(player1:getStats(), player2:getStats(), dt)
+	if not gameStart then
+		updateWelcomeScreen(dt)
+	else
+		screen:update(dt)
+		world:update(dt)
+		player1:update(dt)
+		player2:update(dt)
+		ui:update(player1:getStats(), player2:getStats(), dt)
+	end
 end
 
 function love.draw()
-	screen:apply()
-	player1:draw()
-	player2:draw()
-	
-	love.graphics.print(love.timer.getFPS().." FPS")
-	deep:draw()
-	ui:draw()
-	player1:drawPartSys()
-	player2:drawPartSys()
-	world:draw()
+	if not gameStart then
+		drawWelcomeScreen()
+	else
+		screen:apply()
+		player1:draw()
+		player2:draw()
+		deep:draw()
+		ui:draw()
+		player1:drawPartSys()
+		player2:drawPartSys()
+		world:draw()
+	end
 end
  
 function love.joystickpressed(joystick, button)
-	player1:joystickpressed(joystick, button)
-	player2:joystickpressed(joystick, button)
+	if not gameStart then
+		startGame()
+	else
+	   	player1:joystickpressed(joystick, button)
+		player2:joystickpressed(joystick, button) 
+	end
 end
