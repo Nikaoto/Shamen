@@ -11,7 +11,7 @@ function WindParticle:new(coords)
 	self.psystem:setSizeVariation(1)
 	self.psystem:setAreaSpread("normal",35,13)
   self.psystem:setRelativeRotation(true)
-  self.psystem:setRotation(0, math.rad(360))
+  self.psystem:setRotation(math.rad(1), math.rad(359))
 	--self.psystem:setLinearAcceleration(0, 10, 0, 20)
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
   self.timer = getTime() + 200
