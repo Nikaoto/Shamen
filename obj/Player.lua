@@ -379,8 +379,7 @@ end
 function Player:joystickpressed(joystick, button)
 	if self.joystick and tostring(joystick) == tostring(self.joystick) then
 		if button == Player.controls.TOTEM_1 then
-			--self:dropTotem(1)
-			self:push(math.random(-300, 300), math.random(-300, 300))
+			self:dropTotem(1)
 		elseif button == Player.controls.TOTEM_2 then
 			self:dropTotem(2)
 		elseif button == Player.controls.TOTEM_3 then

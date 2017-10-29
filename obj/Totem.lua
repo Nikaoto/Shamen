@@ -94,27 +94,40 @@ function Totem:draw()
 end
 
 function Totem:update(dt)
+	self:updateFallTween(dt)
+	self:setStackZ(dt)
+	self:updatePartSys(dt)
+	self:checkFallCollisions(dt)
+	self:checkShake(dt)
+end
+
+function Totem:updateFallTween(dt)
 	if not self.complete then
 		self.complete = self.tween:update(dt)
 	end
+end
 
+function Totem:setStackZ(dt)
 	if self.totemBelow then
 		self.z = self.totemBelow.z
 	else
 		self.z = math.ceil(self.y + self.height)
 	end
+end
 
+function Totem:updatePartSys(dt)
 	if not self.dead then
 		if self.partsys then
 			self.partsys:update(dt)
 		end
 	end
+end
 
+function Totem:checkFallCollisions(dt)
 	if not self.complete then
 		-- Checking collisions with other totems
 		for _, totem in pairs(Player.allTotems) do
 			if totem ~= self and not totem.dead then
-				print("name not equal")
 				if (self.x + self.width >= totem.x and self.x <= totem.x + totem.width)
 					and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
 					and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
@@ -134,7 +147,9 @@ function Totem:update(dt)
 			end
 		end
 	end
+end
 
+function Totem:checkShake(dt)
 	if self.complete and not self.shook then --redundant first part, leave for readability
 		if player1:willCollideWith(self.x, self.ox, self.z, self.depth) then
 			self:hitShaman(player1)
