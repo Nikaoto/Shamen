@@ -1,5 +1,6 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
+local tween = require "lib/tween"
 require "world"
 require "obj/Totem"
 require "obj/FireTotem"
@@ -81,6 +82,8 @@ function Player:new(name, sprite, color, joystick, coords)
 		color = {255, 255, 255, 200},
 		shouldShow = false,
 	}
+
+	self.body = love.physics.newBody(world.physicsWorld, self.x, self.y, "dynamic")
 end
 
 function Player:draw()
@@ -100,7 +103,14 @@ end
 
 function Player:update(dt)
 	if not self.dead then
-		self:move(dt)
+		if self.pushTween then
+			local complete = self.pushTween:update(dt)
+			if complete then
+				self.pushTween = nil
+			end
+		else
+			self:move(dt)
+		end
 		self:handleAim(dt)
 		self:regenMana(dt)
 		for _, v in pairs(self.totems) do
@@ -113,7 +123,7 @@ end
 function Player:move(dt)
 	local nextX = self.x + self:getAxis(Player.AXIS_LX) * dt * self.speed
 	local nextY = self.y + self:getAxis(Player.AXIS_LY) * dt * self.speed * Player.Y_MOVE_MOD
-	
+
 	if nextX > world.limitLeft and nextX < world.limitRight then
 		self.x = nextX
 	end
@@ -205,6 +215,10 @@ function Player:isMoving()
 	return self:getAxis(Player.AXIS_LX) ~= 0 or self:getAxis(Player.AXIS_LY) ~= 0
 end
 
+function Player:isImpaired()
+	return self.pushTween ~= nil
+end
+
 function Player:handleAim(dt)
 	if self:isPressingAnyButton() or self:isAiming() then
 		-- update timer
@@ -258,7 +272,7 @@ function Player:isAiming(deadzone)
 end
 
 function Player:animate()
-	if self:isMoving() then
+	if self:isMoving() and not self:isImpaired() then
 		if getTime() - self.anim.walk.timer >= self.anim.walk.interval then
 			if self.anim.walk.isUp then
 				self:setRotation(-self.anim.walk.dr)
@@ -321,6 +335,38 @@ function Player:totemColor(totemIndex)
 	elseif totemIndex == 4 then
 		return {124, 252, 0}
 	end
+end
+
+--Checks screen collisions and returns actual coordinates (used with push tween)
+function Player:putThroughScreenCollisions(nextX, nextY)
+	local retX, retY, retZ = nextX, nextY, 0
+
+	if nextX > world.limitLeft then 
+		retX = world.limitLeft
+	elseif nextX < world.limitRight then
+		retX = world.limitRight
+	end
+
+	if nextY > world.limitTop then
+		retY = world.limitTop
+	elseif nextY < world.limitBottom then
+		retY = world.limitBottom
+	end
+
+	retZ = math.ceil(retY + self.oy)
+
+	return retX, retY, retZ
+end
+
+
+function Player:push(xi, yi)
+	local s = dist(0, 0, xi, yi)
+	local t = s / 500
+	--local finalX, finalY, _ = self:putThroughScreenCollisions(self.x + xi*v, self.y + yi*v)
+	local finalX = self.x + xi
+	local finalY = self.y + yi
+	print(finalX, finalY, t, s)
+	self.pushTween = tween.new(t, self, {x = finalX, y = finalY}, tween.easing.outCirc)
 end
 
 -- Joystick inputs --
