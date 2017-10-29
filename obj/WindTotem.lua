@@ -14,12 +14,7 @@ function WindTotem:new(name, coords, areal, color, sprite)
 end
 
 function WindTotem:update(dt)
-	self:updateFallTween(dt)
-	self:updatePushTween(dt)
-	self:setStackZ(dt)
-	self:updatePartSys(dt)
-	self:checkFallCollisions(dt)
-	self:checkShake(dt)
+	WindTotem.super.update(self, dt)
 	--
 	self:cast()
 end
