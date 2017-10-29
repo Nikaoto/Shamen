@@ -44,6 +44,7 @@ function WindTotem:cast()
 			 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player1.x, player1.z)
 				player1:push((player1.x - self.x)*p, (player1.z - self.z)*p)
 				pushed = true
+				table.insert(objectPool, WindParticle({x = self.x + self.ox, y = self.y - self.oy}))
 		end
 
 		if player2:inAreal(self.x, self.z, self.arealX, self.arealY) --elseif here
@@ -51,6 +52,7 @@ function WindTotem:cast()
 		 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player2.x, player2.z)
 			player2:push((player2.x - self.x) * p, (player2.z - self.z) * p)
 			pushed = true
+			table.insert(objectPool, WindParticle({x = self.x + self.ox, y = self.y - self.oy}))
 		end
 
 		--Check other totems
@@ -64,9 +66,6 @@ function WindTotem:cast()
 				end
 			end
 		end
-		if pushed then
-      table.insert(objectPool, WindParticle({x = self.x + self.ox, y = self.y - self.oy}))
-      sound.wind:play()
-    end
+		if pushed then sound.wind:play() end
 	end
 end

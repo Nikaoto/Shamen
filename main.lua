@@ -16,6 +16,8 @@ local blue = {0, 0, 255}
 function love.keypressed(key)
 	if key == "escape" then
 		love.event.quit()
+	elseif key == "r" then
+		love.load()
 	end
 end
 
@@ -24,13 +26,15 @@ function love.load()
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
 	sound:load()
+	p1Sprite = love.graphics.newImage("res/sprite.png")
+	p2Sprite = love.graphics.newImage("res/sprite3.png")
 	loadWelcomeScreen()
 end
 
 function startGame()
 	local joys = love.joystick.getJoysticks()
-	player1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
-	player2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 800, y = 200})
+	player1 = Player("1", p1Sprite, red, joys[1], {x = 200, y = 200})
+	player2 = Player("2", p2Sprite, blue, joys[2], {x = 800, y = 200})
 	gameStart = true
 end
 

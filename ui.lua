@@ -169,10 +169,17 @@ function ui:draw()
         ui.creepTotemSprite:getWidth() / 2, ui.creepTotemSprite:getHeight() / 2)
   love.graphics.draw(ui.rootTotemSprite, ui.p2.ROOT_TOTEM_X, ui.ARC_Y, _, 0.5, 0.5,
         ui.rootTotemSprite:getWidth() / 2, ui.rootTotemSprite:getHeight() / 2)
+
+--Char icons
+love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.draw(p1Sprite, ui.DEFAULT_PLAYER_ONE_AVATAR_POSITION_X - p1Sprite:getWidth()/4,
+    ui.DEFAULT_PLAYER_ONE_AVATAR_POSITION_Y - p1Sprite:getHeight()/4, _, 0.5, 0.5)
+  love.graphics.draw(p2Sprite, ui.DEFAULT_PLAYER_TWO_AVATAR_POSITION_X - p2Sprite:getWidth()/4,
+    ui.DEFAULT_PLAYER_TWO_AVATAR_POSITION_Y - p2Sprite:getHeight()/4, _, 0.5, 0.5)
+
   -- arcs
   -- Player 1
   love.graphics.setColor( 255, 255, 0 , ui.ARC_DEFAULT_ALPHA)
-
   for k, v in pairs(ui.p1.tweenArray) do
     if v and not v.complete then
       if k == 1 then
