@@ -10,7 +10,7 @@ DestroyParticleSystem.SPAWN_TIME = 500
 DestroyParticleSystem.SIZE = 40
 
 -- Use only with object pool
-function DestroyParticleSystem:new(coords, spawnTime, emmisionRate, size, color)
+function DestroyParticleSystem:new(coords, spawnTime, emmisionRate, size, color, rot)
   self.x , self.y = coords.x , coords.y
   self.spawnTime = spawnTime or DestroyParticleSystem.SPAWN_TIME
   self.size = size or DestroyParticleSystem.SIZE
@@ -24,7 +24,7 @@ function DestroyParticleSystem:new(coords, spawnTime, emmisionRate, size, color)
 	self.psystem:setLinearAcceleration(0, 1000, 0, 2000)
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
   self.psystem:setRelativeRotation(true)
-  self.psystem:setRotation(0, 270)
+  self.psystem:setRotation(math.rad(rot or 270))
   self.timer = self.spawnTime + getTime()
 end
 
