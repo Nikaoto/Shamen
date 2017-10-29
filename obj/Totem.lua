@@ -78,7 +78,7 @@ end
 
 function Totem:draw()
 	self:drawSprite()
-	self:drawCoordCircle()
+--	self:drawCoordCircle()
 	self:drawAreal()
 	--self:log()
 end

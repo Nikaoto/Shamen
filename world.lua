@@ -21,6 +21,18 @@ world.zRange = world.maxZ - world.minZ
 
 world.skyColor = {0, 172, 230}
 world.groundColor = {39, 159, 39}
+grassSprite = love.graphics.newImage("res/grass.png")
+function world:load()
+	math.randomseed(os.time())
+	world.grass = {}
+	for i = 1, screenWidth, grassSprite:getWidth() do
+		for j = world.limitTop, screenHeight, grassSprite:getHeight() do
+			if (math.random(1,10) == 9) then
+				table.insert(world.grass, {x = i, y = j, scale = math.random(1, 10)/10})
+			end
+		end
+	end
+end
 
 function world:draw()
 	deep:rectangleC(world.skyColor, "fill", 0, 0, 1, screenWidth, world.limitTop)
@@ -29,6 +41,9 @@ function world:draw()
 		if not v.shouldDestroy and v.draw ~= nil then
 			v:draw()
 		end
+	end
+	for k, v in pairs(world.grass) do
+		deep:queue(grassSprite, v.x, v.y, 1, _, v.scale, v.scale)
 	end
 end
 

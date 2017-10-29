@@ -17,7 +17,7 @@ Player.AXIS_LY = 2
 Player.AXIS_RX = 4
 Player.AXIS_RY = 3
 Player.Y_MOVE_MOD = 0.85
-Player.DEFAULT_SPEED = 400
+Player.DEFAULT_SPEED = 350
 Player.MANA_REGEN = 15
 
 Player.controls = {
@@ -30,7 +30,7 @@ Player.controls = {
 Player.MAX_HP = 100
 Player.MAX_MP = 100
 Player.AIM_LIMIT_OFFSET = 15
-Player.AIM_SPEED = 800
+Player.AIM_SPEED = 750
 Player.AIM_HIDE_INTERVAL = 3000
 
 function Player:new(name, sprite, color, joystick, coords)
@@ -90,7 +90,6 @@ function Player:draw()
 		for _, v in pairs(self.totems) do
 			v:draw()
 		end
-		deep:circle("fill", self.x, self.y, self.z + 1, 5)
 		deep:queue(self.sprite, self.x, self.y, self.z, math.rad(self.r), self.sx, self.sy,
 			self.ox, self.oy)
 		self:animate()
@@ -119,6 +118,8 @@ function Player:update(dt)
 		for _, v in pairs(self.totems) do
 			v:update(dt)
 		end
+	else
+		resetGame()
 	end
 	self:clearDeadTotems()
 end
@@ -242,14 +243,18 @@ end
 
 function Player:drawAim()
 	if self.aim.shouldShow then
-		local l = 35
+		local l = 40
 		local mod = 1/3
 		deep:ellipseC(self.aim.color, "fill", self.aim.x, self.aim.y, self.aim.z,
 			self.aim.radius*2, self.aim.radius)
-		deep:setColor(self.color)
+
+		deep:setColor(0,0,0)
 		deep:line(self.aim.x, self.aim.y - l, self.aim.x, self.aim.y, self.aim.z + 1)
 		deep:line(self.aim.x - l*mod*0.75, self.aim.y - l*mod, self.aim.x, self.aim.y, self.aim.z + 1)
 		deep:line(self.aim.x + l*mod*0.75, self.aim.y - l*mod, self.aim.x, self.aim.y, self.aim.z + 1)
+		
+		self.color[4] = 100
+		deep:rectangleC(self.color, "fill", self.aim.x - Totem.WIDTH/2, self.aim.y - Totem.HEIGHT, self.aim.z + 1, Totem.WIDTH, Totem.HEIGHT)
 		deep:setColor()
 	end
 end
