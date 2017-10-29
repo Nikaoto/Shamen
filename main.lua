@@ -26,7 +26,7 @@ function love.load()
 
 	local joys = love.joystick.getJoysticks()
 	player1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
-	player2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 300, y = 300})
+	player2 = Player("2", love.graphics.newImage("res/sprite2.png"), blue, joys[2], {x = 800, y = 200})
 end
 
 function love.update(dt)

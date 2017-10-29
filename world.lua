@@ -7,12 +7,12 @@ screenHeight = 768
 isFullscreen = true
 
 objectPool = {}
-
+magic = 40
 world = {
 	limitTop = screenHeight*2/9,
-	limitBottom = screenHeight,
-	limitLeft = 0,
-	limitRight = screenWidth,
+	limitBottom = screenHeight + magic,
+	limitLeft = magic,
+	limitRight = screenWidth - magic,
 	shake = 20,
 }
 world.maxZ = world.limitBottom
