@@ -289,6 +289,7 @@ end
 function Player:dropTotem(totemIndex)
 	if self.mp >= Totem.MANA_COST then
 		ui:onTotemUse(tonumber(self.name), totemIndex)
+		sound.totem_drop:play()
 		if totemIndex == 1 then
 			local newTotem = FireTotem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200, 
 				self:totemColor(totemIndex), ui.fireTotemSprite)

@@ -158,10 +158,10 @@ function Totem:checkFallCollisions(dt)
 					if self.y < totem.y and not self.totemBelow then
 						if totem.name == self.name then
 							self:stackOnto(totem)
-							print("STACK")
+							sound.totem_stack:play()
 						else
 							self:hitEnemyTotem(totem)
-							print("BREAK")
+							sound.totem_break:play()
 						end
 					end
 					self.complete = true

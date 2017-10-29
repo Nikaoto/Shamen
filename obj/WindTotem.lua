@@ -35,18 +35,21 @@ end
 
 function WindTotem:cast()
 	if self.shook and not self.dead then
+		local pushed = false
 		--Check players
 		--if self.name ~= player1.name then
 		if player1:inAreal(self.x, self.z, self.arealX, self.arealY) 
 			 and not player1:isImpaired() then
 			 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player1.x, player1.z)
 				player1:push((player1.x - self.x)*p, (player1.z - self.z)*p)
+				pushed = true
 		end
 
 		if player2:inAreal(self.x, self.z, self.arealX, self.arealY) --elseif here
 		 and not player2:isImpaired() then
 		 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player2.x, player2.z)
 			player2:push((player2.x - self.x) * p, (player2.z - self.z) * p)
+			pushed = true
 		end
 
 		--Check other totems
@@ -56,8 +59,10 @@ function WindTotem:cast()
 				 and not totem:isRooted() then
 				 	local t = self:getKnockback(WindTotem.TOTEM_KNOCKBACK, totem.x, totem.z)
 					totem:push((totem.x - self.x) * t, (totem.z - self.z) * t)
+					pushed = true
 				end
 			end
 		end
+		if pushed then sound.wind:play() end
 	end
 end

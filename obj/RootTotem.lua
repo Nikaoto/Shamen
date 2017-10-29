@@ -45,17 +45,20 @@ end
 
 function RootTotem:cast(dt)
 	if self.shook and not self.dead then
+		local newRoot = false
 		--Check players
 		if self.name == player1.name then
 			if player2:inAreal(self.x, self.z, self.arealX, self.arealY)
 			 and not player2.rooted then
 				table.insert(self.rootList, player2)
+				newRoot = true
 			end
 		end
 		if self.name == player2.name then
 			if player1:inAreal(self.x, self.z, self.arealX, self.arealY) 
 			 and not player1.rooted then
 				table.insert(self.rootList, player1)
+				newRoot = true
 			end
 		end
 		--Check totems
@@ -63,8 +66,11 @@ function RootTotem:cast(dt)
 			if v:inAreal(self.x, self.z, self.arealX, self.arealY)
 			 and not v.rooted then
 				table.insert(self.rootList, v)
+				newRoot = true
 			end
 		end
+
+		if rooted then sound.root:play() end
 
 		for k, v in pairs(self.rootList) do
 			v.rooted = true
