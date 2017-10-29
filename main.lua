@@ -33,8 +33,8 @@ end
 
 function startGame()
 	local joys = love.joystick.getJoysticks()
-	player1 = Player("1", p1Sprite, red, joys[1], {x = 200, y = 200})
-	player2 = Player("2", p2Sprite, blue, joys[2], {x = 800, y = 200})
+	player1 = Player("1", p1Sprite, red, joys[1], {x = 200, y = 400})
+	player2 = Player("2", p2Sprite, blue, joys[2], {x = 1000, y = 400})
 	gameStart = true
 end
 
