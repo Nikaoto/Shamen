@@ -45,7 +45,7 @@ function love.draw()
 	player2:drawPartSys()
 	world:draw()
 end
-
+ 
 function love.joystickpressed(joystick, button)
 	player1:joystickpressed(joystick, button)
 	player2:joystickpressed(joystick, button)

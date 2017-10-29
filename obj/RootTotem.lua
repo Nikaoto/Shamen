@@ -12,9 +12,3 @@ end
 
 function RootTotem:cast()
 end
-
-RootTotem.__tostringx = function (p)
-    return ""
-end
-
-RootTotem.__tostring = RootTotem.__tostringx

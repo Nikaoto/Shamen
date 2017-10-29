@@ -12,9 +12,3 @@ end
 
 function WindTotem:cast()
 end
-
-WindTotem.__tostringx = function (p)
-    return ""
-end
-
-WindTotem.__tostring = WindTotem.__tostringx

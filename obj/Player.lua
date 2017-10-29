@@ -2,6 +2,10 @@ package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
 require "world"
 require "obj/Totem"
+require "obj/FireTotem"
+require "obj/WindTotem"
+require "obj/CreepTotem"
+require "obj/RootTotem"
 
 Player = Object:extend()
 

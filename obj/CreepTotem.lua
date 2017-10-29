@@ -12,9 +12,3 @@ end
 
 function CreepTotem:cast()
 end
-
-CreepTotem.__tostringx = function (p)
-    return ""
-end
-
-CreepTotem.__tostring = CreepTotem.__tostringx

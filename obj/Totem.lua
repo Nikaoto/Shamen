@@ -93,14 +93,6 @@ function Totem:draw()
 	--self:log()
 end
 
-Totem.__tostringx = function (p)
-    Totem.__tostring = nil
-    local s = "Totem " .. tostring(p)
-    Totem.__tostring = Totem.__tostringx
-    return s
-end
-Totem.__tostring = Totem.__tostringx
-
 function Totem:update(dt)
 	if not self.complete then
 		self.complete = self.tween:update(dt)
@@ -121,7 +113,8 @@ function Totem:update(dt)
 	if not self.complete then
 		-- Checking collisions with other totems
 		for _, totem in pairs(Player.allTotems) do
-			if tostring(totem) ~= tostring(self) and not totem.dead then
+			if totem ~= self and not totem.dead then
+				print("name not equal")
 				if (self.x + self.width >= totem.x and self.x <= totem.x + totem.width)
 					and (self.y + self.height >= totem.y and self.y <= totem.y + totem.height)
 					and (self.endZ <= totem.z + totem.depth and self.endZ >= totem.z - totem.depth) then
@@ -172,7 +165,6 @@ function Totem:stackOnto(totem)
 	end
 
 	if not self.totemBelow then
-		print("stack "..tostring(self).." onto ".. tostring(totem))
 		if totem.stackIndex == nil then totem.stackIndex = 1 end
 		self.stackIndex = totem.stackIndex + 1
 		self.partsys = StackParticleSystem({ x = totem.x + totem.ox , y = totem.y})

@@ -12,9 +12,3 @@ end
 
 function FireTotem:cast()
 end
-
-FireTotem.__tostringx = function (p)
-    return ""
-end
-
-FireTotem.__tostring = FireTotem.__tostringx
