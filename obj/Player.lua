@@ -184,16 +184,18 @@ function Player:takeDamage(amount)
 	self:checkDeath()
 end
 
+function Player:checkDeath()
+	if self.hp <= 0 then
+		self.dead = true
+	elseif self.hp > Player.MAX_HP then
+		self.hp = Player.MAX_HP
+	end
+end
+
 function Player:drainMana(amount)
 	self.mp = self.mp - amount
 	if self.mp <= 0 then
 		self.mp = 0
-	end
-end
-
-function Player:checkDeath()
-	if self.hp <= 0 then
-		self.dead = true
 	end
 end
 

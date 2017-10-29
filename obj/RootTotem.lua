@@ -70,7 +70,7 @@ function RootTotem:cast(dt)
 			end
 		end
 
-		if rooted then sound.root:play() end
+--		if rooted then sound.root:play() end
 
 		for k, v in pairs(self.rootList) do
 			v.rooted = true
