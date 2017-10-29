@@ -5,14 +5,14 @@ Fireball = Object:extend()
 Fireball.sprite = love.graphics.newImage("res/fireball.png")
 Fireball.ballSpeed = 700
 Fireball.DAMAGE_AMOUNT = 5
-Fireball.SIZE = 20
+Fireball.RADIUS = 20
 
 function Fireball:new(startPos, target)
   self.target = target
   self.x , self.y, self.z = startPos.x , startPos.y, startPos.z
   self.sound = love.audio.newSource("res/fireball.wav", "static")
   self.sound:play()
-  self.s = Fireball.SIZE
+  self.radius = Fireball.RADIUS
 end
 
 function Fireball:draw()
@@ -39,16 +39,15 @@ function Fireball:update(dt)
       self.y = self.y - (Fireball.ballSpeed * dt)
     end
 
-    self.z = math.floor(self.y + self.s)
+    self.z = math.floor(self.y + self.radius)
     self:checkHitTarget(target)
   end
 end
 
 function Fireball:checkHitTarget(target)
-  if self.x + self.s >= self.target.x and self.x - self.s <= self.target.x 
-      and self.z + self.s >= self.target.z and self.z - self.s <= self.target.z then
+  if dist(self.x, self.y, self.target.x, self.target.y) <= self.radius then
+    print("HIT --")
     self.target:takeDamage(Fireball.DAMAGE_AMOUNT)
-    print("HIT")
     self.targetHit = true
   end
 end
