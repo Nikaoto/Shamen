@@ -82,8 +82,6 @@ function Player:new(name, sprite, color, joystick, coords)
 		color = {255, 255, 255, 200},
 		shouldShow = false,
 	}
-
-	self.body = love.physics.newBody(world.physicsWorld, self.x, self.y, "dynamic")
 end
 
 function Player:draw()
@@ -337,36 +335,33 @@ function Player:totemColor(totemIndex)
 	end
 end
 
+function Player:push(xi, yi)
+	local s = dist(0, 0, xi, yi)
+	local t = s / 500
+	local finalX, finalY, _ = self:putThroughScreenCollisions(self.x + xi, self.y + yi)
+	print(finalX, finalY, t, s)
+	self.pushTween = tween.new(t, self, {x = finalX, y = finalY}, tween.easing.outCirc)
+end
+
 --Checks screen collisions and returns actual coordinates (used with push tween)
 function Player:putThroughScreenCollisions(nextX, nextY)
 	local retX, retY, retZ = nextX, nextY, 0
 
-	if nextX > world.limitLeft then 
+	if nextX < world.limitLeft then 
 		retX = world.limitLeft
-	elseif nextX < world.limitRight then
+	elseif nextX > world.limitRight then
 		retX = world.limitRight
 	end
 
-	if nextY > world.limitTop then
+	if nextY < world.limitTop then
 		retY = world.limitTop
-	elseif nextY < world.limitBottom then
+	elseif nextY > world.limitBottom then
 		retY = world.limitBottom
 	end
 
 	retZ = math.ceil(retY + self.oy)
 
 	return retX, retY, retZ
-end
-
-
-function Player:push(xi, yi)
-	local s = dist(0, 0, xi, yi)
-	local t = s / 500
-	--local finalX, finalY, _ = self:putThroughScreenCollisions(self.x + xi*v, self.y + yi*v)
-	local finalX = self.x + xi
-	local finalY = self.y + yi
-	print(finalX, finalY, t, s)
-	self.pushTween = tween.new(t, self, {x = finalX, y = finalY}, tween.easing.outCirc)
 end
 
 -- Joystick inputs --
@@ -384,7 +379,8 @@ end
 function Player:joystickpressed(joystick, button)
 	if self.joystick and tostring(joystick) == tostring(self.joystick) then
 		if button == Player.controls.TOTEM_1 then
-			self:dropTotem(1)
+			--self:dropTotem(1)
+			self:push(math.random(-300, 300), math.random(-300, 300))
 		elseif button == Player.controls.TOTEM_2 then
 			self:dropTotem(2)
 		elseif button == Player.controls.TOTEM_3 then
