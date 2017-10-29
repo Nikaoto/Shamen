@@ -5,13 +5,13 @@ HealingParticleSystem = Object:extend()
 
 function HealingParticleSystem:new(coords)
   self.x , self.y = coords.x , coords.y
-	self.psystem = love.graphics.newParticleSystem(getBubble(15), 800)
-	self.psystem:setSpeed(-210,110)
-  self.psystem:setEmissionRate(50)
+	self.psystem = love.graphics.newParticleSystem(getBubble(15), 8000)
+	self.psystem:setSpeed(0,0)
+  self.psystem:setEmissionRate(250)
   self.psystem:setParticleLifetime(0.5, 0.9)
 	self.psystem:setSizeVariation(0)
-	self.psystem:setAreaSpread("uniform",145,60)
-	self.psystem:setLinearAcceleration(0, 500, 0, 700)
+	self.psystem:setAreaSpread("ellipse", Totem.AREAL_SIZE_X, Totem.AREAL_SIZE_Y)
+	self.psystem:setLinearAcceleration(0, -400, 0, -550)
 	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
 end
 

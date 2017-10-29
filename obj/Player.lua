@@ -294,22 +294,22 @@ function Player:dropTotem(totemIndex)
 		sound.totem_drop:play()
 		if totemIndex == 1 then
 			local newTotem = FireTotem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
-				self:totemColor(totemIndex), ui.fireTotemSprite)
+				self:totemColor(totemIndex))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		elseif totemIndex == 2 then
 			local newTotem = WindTotem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
-				self:totemColor(totemIndex), ui.windTotemSprite)
+				self:totemColor(totemIndex))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		elseif totemIndex == 3 then
 			local newTotem = CreepTotem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
-				self:totemColor(totemIndex), ui.creepTotemSprite)
+				self:totemColor(totemIndex))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		elseif totemIndex == 4 then
 			local newTotem = RootTotem(self.name, { x = self.aim.x, y = self.aim.y, z = self.z }, 200,
-				self:totemColor(totemIndex), ui.rootTotemSprite)
+				self:totemColor(totemIndex))
 			table.insert(Player.allTotems, newTotem)
 			table.insert(self.totems, newTotem)
 		else
