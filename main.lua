@@ -1,8 +1,10 @@
 package.path = package.path .. ";../?.lua"
 
 require "obj/Player"
-require "lib/deep"
+
 require "ui"
+require "sound"
+require "lib/deep"
 screen = require "lib/shack"
 
 local red = {255, 0, 0}
@@ -19,6 +21,8 @@ function love.load()
 	screen:setDimensions(screenWidth, screenHeight)
 	love.window.setMode(screenWidth, screenHeight, _)
 	love.window.setFullscreen(isFullscreen)
+
+	sound:load()
 
 	local joys = love.joystick.getJoysticks()
 	player1 = Player("1", love.graphics.newImage("res/sprite.png"), red, joys[1], {x = 200, y = 200})
