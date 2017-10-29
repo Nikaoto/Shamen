@@ -2,9 +2,9 @@ package.path = package.path .. ";../?.lua"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1000
-screenHeight = 500
-isFullscreen = false
+screenWidth = 1366
+screenHeight = 768
+isFullscreen = true
 
 objectPool = {}
 
@@ -42,12 +42,42 @@ function world:update(dt)
 	end
 end
 
+function putThroughScreenCollisions(nextX, nextY)
+	local retX, retY, retZ = nextX, nextY, 0
+
+	if nextX < world.limitLeft then 
+		retX = world.limitLeft
+	elseif nextX > world.limitRight then
+		retX = world.limitRight
+	end
+
+	if nextY < world.limitTop then
+		retY = world.limitTop
+	elseif nextY > world.limitBottom then
+		retY = world.limitBottom
+	end
+
+	return retX, retY, retZ
+end
+
+function inAreal(x1, z1, x2, z2, rx, ry)
+	if not ry then
+		return dist(x1, z1, x2, z2) <= rx
+	else
+		local c = rx/2
+		local left = dist(x1, z1, x2 - c, z2) <= c
+		local mid = dist(x1, z1 + 20, x2, z2) <= ry
+		local right = dist(x1 - 25, z1, x2 + c, z2) <= c
+		return (left or mid or right)
+	end
+end
+
 function sq(a)
 	return a*a
 end
 
 function dist(x1, y1, x2, y2)
-	return math.sqrt(sq(x2-x1) + sq(y2-y1)) 
+	return math.sqrt(sq(x2-x1) + sq(y2-y1))
 end
 
 function getTime()

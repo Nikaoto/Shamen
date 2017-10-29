@@ -12,7 +12,7 @@ Totem.HEIGHT = 55
 Totem.DEPTH = 55
 Totem.AREAL_Z = 2
 Totem.AREAL_SIZE_X = 180
-Totem.AREAL_SIZE_Y = 90
+Totem.AREAL_SIZE_Y = 110
 Totem.DEFAULT_COLOR = {0, 255, 255}
 Totem.FALL_TIME = 0.2
 Totem.SHAKE_AMOUNT = 20
@@ -68,10 +68,6 @@ function Totem:destroy(shouldEmitParticles)
 	self.totemAbove = nil
 end
 
-function Totem:log()
-	deep:print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z, self.x, self.y, self.z)
-end
-
 function Totem:drawPartSys()
 	if not self.dead then
 		if self.partsys then
@@ -95,6 +91,7 @@ end
 
 function Totem:update(dt)
 	self:updateFallTween(dt)
+	self:updatePushTween(dt)
 	self:setStackZ(dt)
 	self:updatePartSys(dt)
 	self:checkFallCollisions(dt)
@@ -104,6 +101,16 @@ end
 function Totem:updateFallTween(dt)
 	if not self.complete then
 		self.complete = self.tween:update(dt)
+	end
+end
+
+function Totem:updatePushTween(dt)
+	if self.pushTween and self.shook then
+		local complete = self.pushTween:update(dt)
+		self.z = math.ceil(self.y + self.oy)
+		if complete then
+			self.pushTween = nil
+		end
 	end
 end
 
@@ -161,10 +168,6 @@ function Totem:checkShake(dt)
 	end
 end
 
-function Totem:printPos()
-	print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z)
-end
-
 function Totem:stackOnto(totem)
 	if totem.totemAbove then
 		if totem.totemAbove.stackIndex < Totem.MAX_STACKED_TOTEMS then
@@ -194,10 +197,35 @@ function Totem:stackOnto(totem)
 	print("stackindex = " .. self.stackIndex)
 end
 
+function Totem:push(xi, yi)
+	local s = dist(0, 0, xi, yi)
+	if s == 0 then s = 1 end
+	local t = s / 500
+	
+	local finalX, finalY, _ = putThroughScreenCollisions(self.x + xi, self.y + yi)
+	self.pushTween = tween.new(t, self, {x = finalX, y = finalY}, tween.easing.outCirc)
+end
+
+function Totem:isRooted()
+	return false --TODO here
+end
+
+function Totem:inAreal(x, z, rx, ry)
+	return inAreal(self.x, self.z, x, z, rx, ry)
+end
+
 function Totem:animate()
 end
 
 function Totem:cast()
+end
+
+function Totem:printPos()
+	print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z)
+end
+
+function Totem:log()
+	deep:print("x = " .. self.x .. ", y = ".. self.y .. ", z = " .. self.z, self.x, self.y, self.z)
 end
 
 -- setter / getters

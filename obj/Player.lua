@@ -103,10 +103,12 @@ function Player:update(dt)
 	if not self.dead then
 		if self.pushTween then
 			local complete = self.pushTween:update(dt)
+			self.z = math.ceil(self.y + self.oy)
 			if complete then
 				self.pushTween = nil
 			end
-		else
+		end
+		if not self:isImpaired() then
 			self:move(dt)
 		end
 		self:handleAim(dt)
@@ -139,21 +141,12 @@ function Player:regenMana(dt)
 end
 
 function Player:inAreal(x, z, rx, ry)
-	if not ry then
-		return dist(self.x, self.z, x, z) <= rx
-	else
-		local c = rx/2
-		local left = dist(self.x, self.z, x - c, z) <= c
-		local mid = dist(self.x, self.z, x, z) <= c
-		local right = dist(self.x, self.z, x + c, z) <= c
-		print("left = " .. tostring(left), "mid = " .. tostring(mid), "right = " .. tostring(right))
-		return (left or mid or right)
-	end
+	return inAreal(self.x, self.z, x, z, rx, ry)
 end
 
 -- Used to detect totem fall collision
 function Player:willCollideWith(x, ox, z, depth)
-	return (self.x + self.ox >= x - ox and self.x - self.ox <= x + ox) 
+	return (self.x + self.ox - 5 >= x - ox and self.x - self.ox + 5 <= x + ox) 
 		and (self.z <= z + depth and self.z >= z - depth)
 end
 
@@ -338,30 +331,9 @@ end
 function Player:push(xi, yi)
 	local s = dist(0, 0, xi, yi)
 	local t = s / 500
-	local finalX, finalY, _ = self:putThroughScreenCollisions(self.x + xi, self.y + yi)
+	local finalX, finalY, _ = putThroughScreenCollisions(self.x + xi, self.y + yi)
 	print(finalX, finalY, t, s)
 	self.pushTween = tween.new(t, self, {x = finalX, y = finalY}, tween.easing.outCirc)
-end
-
---Checks screen collisions and returns actual coordinates (used with push tween)
-function Player:putThroughScreenCollisions(nextX, nextY)
-	local retX, retY, retZ = nextX, nextY, 0
-
-	if nextX < world.limitLeft then 
-		retX = world.limitLeft
-	elseif nextX > world.limitRight then
-		retX = world.limitRight
-	end
-
-	if nextY < world.limitTop then
-		retY = world.limitTop
-	elseif nextY > world.limitBottom then
-		retY = world.limitBottom
-	end
-
-	retZ = math.ceil(retY + self.oy)
-
-	return retX, retY, retZ
 end
 
 -- Joystick inputs --
