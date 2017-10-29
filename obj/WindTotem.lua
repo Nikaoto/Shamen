@@ -1,6 +1,7 @@
 package.path = package.path .. ";../?.lua"
 Object = require "lib/classic"
 require "obj/Totem"
+require "obj/WindParticle"
 
 WindTotem = Totem:extend()
 WindTotem.sprite = love.graphics.newImage("res/totem_wind.png")
@@ -38,7 +39,7 @@ function WindTotem:cast()
 		local pushed = false
 		--Check players
 		--if self.name ~= player1.name then
-		if player1:inAreal(self.x, self.z, self.arealX, self.arealY) 
+		if player1:inAreal(self.x, self.z, self.arealX, self.arealY)
 			 and not player1:isImpaired() then
 			 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player1.x, player1.z)
 				player1:push((player1.x - self.x)*p, (player1.z - self.z)*p)
@@ -63,6 +64,9 @@ function WindTotem:cast()
 				end
 			end
 		end
-		if pushed then sound.wind:play() end
+		if pushed then
+      table.insert(objectPool, WindParticle({x = self.x + self.ox, y = self.y - self.oy}))
+      sound.wind:play()
+    end
 	end
 end
