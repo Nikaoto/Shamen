@@ -3,14 +3,13 @@ Object = require "lib/classic"
 require "obj/Totem"
 
 WindTotem = Totem:extend()
+WindTotem.sprite = love.graphics.newImage("res/totem_wind.png")
 
 WindTotem.PLAYER_KNOCKBACK = 200
 WindTotem.TOTEM_KNOCKBACK = 300
 
-
 function WindTotem:new(name, coords, areal, color, sprite)
-  local currentSprite = love.graphics.newImage("res/totem_wind.png")
-  WindTotem.super.new(self, name, coords, areal, color, currentSprite)
+  WindTotem.super.new(self, name, coords, areal, color, WindTotem.sprite)
 end
 
 function WindTotem:update(dt)

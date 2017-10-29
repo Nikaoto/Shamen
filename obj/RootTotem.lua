@@ -3,11 +3,10 @@ Object = require "lib/classic"
 require "obj/Totem"
 
 RootTotem = Totem:extend()
-
+RootTotem.sprite = love.graphics.newImage("res/totem_root.png")
 
 function RootTotem:new(name, coords, areal, color, sprite)
-  local currentSprite = love.graphics.newImage("res/totem_root.png")
-  RootTotem.super.new(self, name, coords, areal, color, currentSprite)
+  RootTotem.super.new(self, name, coords, areal, color, RootTotem.sprite)
   self.rooted = true
   self.alpha = 100
   self.rootList = {}
