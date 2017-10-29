@@ -77,16 +77,28 @@ function Totem:drawPartSys()
 end
 
 function Totem:draw()
+	self:drawSprite()
+	self:drawCoordCircle()
+	self:drawAreal()
+	--self:log()
+end
+
+function Totem:drawSprite()
 	if self.sprite then
 		deep:queue(self.sprite, self.x, self.y, self.z, _, self.sx, self.sy)
 	else
 		deep:rectangleC(self.color, "fill", self.x, self.y, self.z, self.width, self.height)
 	end
+end
+
+function Totem:drawCoordCircle()
 	deep:circle("fill", self.x, self.y, self.z + 1, 5)
+end
+
+function Totem:drawAreal()
 	if self.complete then
 		deep:ellipseC(self.color, "line", self.x + self.ox, self.y + self.oy, Totem.AREAL_Z, self.arealX, self.arealY)
 	end
-	--self:log()
 end
 
 function Totem:update(dt)
