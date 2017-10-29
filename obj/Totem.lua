@@ -117,6 +117,9 @@ function Totem:updateFallTween(dt)
 end
 
 function Totem:updatePushTween(dt)
+	if self.rooted then
+		self.pushTween = nil
+	end
 	if self.pushTween and self.shook then
 		local complete = self.pushTween:update(dt)
 		self.z = math.ceil(self.y + self.oy)
@@ -219,7 +222,7 @@ function Totem:push(xi, yi)
 end
 
 function Totem:isRooted()
-	return false --TODO here
+	return self.rooted
 end
 
 function Totem:inAreal(x, z, rx, ry)

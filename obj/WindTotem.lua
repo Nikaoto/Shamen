@@ -35,15 +35,16 @@ function WindTotem:getKnockback(k, x, z)
 end
 
 function WindTotem:cast()
-	if self.complete and self.shook and not self.dead then
+	if self.shook and not self.dead then
 		--Check players
-		if self.name ~= player1.name then
-			if player1:inAreal(self.x, self.z, self.arealX, self.arealY) 
+		--if self.name ~= player1.name then
+		if player1:inAreal(self.x, self.z, self.arealX, self.arealY) 
 			 and not player1:isImpaired() then
 			 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player1.x, player1.z)
 				player1:push((player1.x - self.x)*p, (player1.z - self.z)*p)
-			end
-		elseif player2:inAreal(self.x, self.z, self.arealX, self.arealY)
+		end
+
+		if player2:inAreal(self.x, self.z, self.arealX, self.arealY) --elseif here
 		 and not player2:isImpaired() then
 		 	local p = self:getKnockback(WindTotem.PLAYER_KNOCKBACK, player2.x, player2.z)
 			player2:push((player2.x - self.x) * p, (player2.z - self.z) * p)

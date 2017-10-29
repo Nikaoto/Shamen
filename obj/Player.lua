@@ -101,7 +101,10 @@ end
 
 function Player:update(dt)
 	if not self.dead then
-		if self.pushTween then
+		if self.rooted and self.pushTween then
+			print("removing tween")
+			self.pushTween = nil
+		elseif self.pushTween then
 			local complete = self.pushTween:update(dt)
 			self.z = math.ceil(self.y + self.oy)
 			if complete then
@@ -207,7 +210,7 @@ function Player:isMoving()
 end
 
 function Player:isImpaired()
-	return self.pushTween ~= nil
+	return (self.pushTween ~= nil) or (self.rooted == true)
 end
 
 function Player:handleAim(dt)
