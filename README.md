@@ -1,7 +1,6 @@
 # Shamen
 A game about two shamans made in 72 hours during the "GameFest" GameJam Tbilisi
-
-![](https://i.imgur.com/SDNXQJM.gifv)
+![Shamen](https://i.imgur.com/MGCT25a.gif)
 
 
 ## Download
