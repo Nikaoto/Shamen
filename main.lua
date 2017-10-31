@@ -1,4 +1,9 @@
 package.path = package.path .. ";../?.lua"
+isFullscreen = true
+love.window.setFullscreen(isFullscreen)
+screenWidth, screenHeight = love.graphics.getDimensions()
+require "world"
+world:load()
 require "welcomescreen"
 require "obj/Player"
 
@@ -19,9 +24,6 @@ function love.keypressed(key)
 	end
 end
 
-	screen:setDimensions(screenWidth, screenHeight)
-	love.window.setMode(screenWidth, screenHeight, _)
-	love.window.setFullscreen(isFullscreen)
 function love.load()
 	sound:load()
 	p1Sprite = love.graphics.newImage("res/sprite.png")

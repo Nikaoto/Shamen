@@ -1,5 +1,7 @@
 # Shamen
 A game about two shamans made in 72 hours during the "GameFest" GameJam Tbilisi
+![Shamen](https://i.imgur.com/SDNXQJM.gifv)
+
 
 ## Download
 You can download the game from the [releases](https://github.com/Nikaoto/Shamen/releases) page. 
@@ -29,16 +31,20 @@ Both shamans have four types of totems which can be used with the joystick trigg
 Constantly fires fireballs in its active radius at the enemy.
 
 
-## Healing Totem (Right Trigger, R2)
+### Healing Totem (Right Trigger, R2)
 ![Shamen - Healing Totem](https://i.imgur.com/Qb2Q702.png)
 Standing in its areal constantly heals you.
 
 
-## Root Totem (Left Trigger, L2)
+### Root Totem (Left Trigger, L2)
+![Shamen - Root Totem](https://i.imgur.com/uyZZwuE.png)
+Roots totems and the enemy player in its areal. Counters the wind totem.
 
 
 ### Wind Totem (Left Bumper, L1)
-
+![Shamen - Wind Totem](https://i.imgur.com/s0oMEti.png)
+Knocks everything out of its areal including totems. Wind totems have no effect on rooted entities,
+ including the root totem itself.
 
 Each totem stays and applies their efect FOREVER only in their active radius, unless the enemy hits 
 it with their totem to destroy it.
@@ -50,7 +56,7 @@ it with their totem to destroy it.
 * The game works with every type of joystick (generic, ps, xbox...)
 
 ## NOTE
-I will update the README with more info soon...
+I will update the README with more gifs and info soon...
 
 ## Credits
 Code by me and [gugakatsi](https://github.com/gugakatsi)

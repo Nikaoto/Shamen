@@ -2,27 +2,23 @@ package.path = package.path .. ";../?.lua"
 require "lib/deep"
 screen = require "lib/shack"
 
-screenWidth = 1366
-screenHeight = 768
-isFullscreen = true
+world = {}
 
-objectPool = {}
-magic = 40
-world = {
-	limitTop = screenHeight*2/9,
-	limitBottom = screenHeight + magic,
-	limitLeft = magic,
-	limitRight = screenWidth - magic,
-	shake = 20,
-}
-world.maxZ = world.limitBottom
-world.minZ = world.limitTop
-world.zRange = world.maxZ - world.minZ
-
-world.skyColor = {0, 172, 230}
-world.groundColor = {39, 159, 39}
-grassSprite = love.graphics.newImage("res/grass.png")
 function world:load()
+	objectPool = {}
+	magic = 40
+	world.limitTop = screenHeight*2/9
+	world.limitBottom = screenHeight + magic
+	world.limitLeft = magic
+	world.limitRight = screenWidth - magic
+	world.shake = 20
+	world.maxZ = world.limitBottom
+	world.minZ = world.limitTop
+	world.zRange = world.maxZ - world.minZ
+
+	world.skyColor = {0, 172, 230}
+	world.groundColor = {39, 159, 39}
+	grassSprite = love.graphics.newImage("res/grass.png")
 	math.randomseed(os.time())
 	world.grass = {}
 	for i = 1, screenWidth, grassSprite:getWidth() do
