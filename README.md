@@ -17,6 +17,7 @@ install it on your computer. You'll then be able to launch `Shamen.love` to play
 
 ## How to play?
 **Shamen requires two gamepads to play**
+
 Shamen is a two player action-strategy game about two shamans (shamen if you will) who are taksed
 with defeating each other. 
 
