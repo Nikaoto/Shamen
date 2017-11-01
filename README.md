@@ -25,7 +25,15 @@ Use the left stick to move your shaman
 
 Use the right stick to move your target around.
 
+* The red bar represents your health. When one of the players' reaches 0, the game resets.
+* Casting totems drains mana (blue bar in the UI), which slowly regenarates all the time.
+
 Both shamans have four types of totems which can be used with the joystick triggers and bumpers.
+
+Each totem stays and applies their efect FOREVER only in their active radius, unless the enemy hits 
+it with their totem to destroy it.
+
+**You can stack your totems on top of each other to combo their effects**
 
 ### Fire Totem (Right Bumper, R1)
 ![Shamen - Fire Totem](https://i.imgur.com/eOYhdYH.png)
@@ -33,33 +41,57 @@ Constantly fires fireballs in its active radius at the enemy.
 
 ![Fire Totem drop](https://i.imgur.com/50P3CNg.gif)
 
+Stacking the fire totems multiplies the effect:
+![Fire Totem stack](https://i.imgur.com/UI3BzQf.gif)
 
 ### Healing Totem (Right Trigger, R2)
 ![Shamen - Healing Totem](https://i.imgur.com/Qb2Q702.png)
 Standing in its areal constantly heals you.
 
+![Healing Totem drop](https://i.imgur.com/OUcduu6.gif)
+
+Stacking them multiplies the effect:
+![Healing Totem stack](https://i.imgur.com/CirbNCK.gif)
 
 ### Root Totem (Left Trigger, L2)
 ![Shamen - Root Totem](https://i.imgur.com/uyZZwuE.png)
-Roots totems and the enemy player in its areal. Counters the wind totem.
+Roots totems and the enemy player in its areal, making them immobile. Counters the wind totem.
 
+![Root Totem drop](https://i.imgur.com/snSJptF.gif)
 
 ### Wind Totem (Left Bumper, L1)
 ![Shamen - Wind Totem](https://i.imgur.com/s0oMEti.png)
 Knocks everything out of its areal including totems. Wind totems have no effect on rooted entities,
  including the root totem itself.
 
-Each totem stays and applies their efect FOREVER only in their active radius, unless the enemy hits 
-it with their totem to destroy it.
+Shamans:
+![Wind Totem shaman knock](https://i.imgur.com/np5UcEJ.gif)
 
-* You can stack your totems on top of each other to combo their effects.
-* Casting totems drains mana (blue bar in the UI), which slowly regenarates all the time.
-* The red bar represents your health.
-* When a totem hits you, it breaks, but you take damage. 
-* The game works with every type of joystick (generic, ps, xbox...)
+Enemy totems:
+![Wind Totem drop](https://i.imgur.com/RBoBF7j.gif)
 
-## NOTE
-I will update the README with more gifs and info soon...
+Friendly totems:
+![Wind Totem friendly totem knock](https://i.imgur.com/YOdBqGR.gifv)
+
+### Hitting an enemy totem with yours breaks both of them
+![Totem Totem break](https://i.imgur.com/MU6OfL9.gif)
+*use this to counter the enemy's totems*
+
+### When a totem hits you, you take damage and it breaks. 
+![Totem Shaman break](https://i.imgur.com/C3LkGdd.gif)
+
+**You can make plays by comboing different totems with each other**
+![Wind totem play](https://i.imgur.com/uR3aguW.gifv)
+
+Here are a few more recommendations:
+* Stack fire totems on top of root to disable and damage the enemy
+* Use two wind totems to knock the enemy back and forth
+* Play pinball with the wind totems
+* Seize the means of production
+* Drop fire totems and spread them out with the wind totem
+
+
+**The game works with every type of joystick (generic, ps, xbox...)**
 
 ## Credits
 Code by me and [gugakatsi](https://github.com/gugakatsi)
