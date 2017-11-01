@@ -1,6 +1,6 @@
 # Shamen
 A game about two shamans made in 72 hours during the "GameFest" GameJam Tbilisi
-![Shamen intro](https://i.imgur.com/B4gSo4M.gifv)
+![Shamen intro](https://i.imgur.com/B4gSo4M.gif)
 
 ## Download
 You can download the game from the [releases](https://github.com/Nikaoto/Shamen/releases) page. 
