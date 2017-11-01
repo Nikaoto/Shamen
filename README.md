@@ -15,7 +15,7 @@ install it on your computer. You'll then be able to launch `Shamen.love` to play
 
 **You MUST connect at least two joysticks to play the game. The game won't work without them**
 
-## How to play?
+# How to play?
 **Shamen requires two gamepads to play**
 
 Shamen is a two player action-strategy game about two shamans (shamen if you will) who are taksed
@@ -35,7 +35,8 @@ it with their totem to destroy it.
 
 **You can stack your totems on top of each other to combo their effects**
 
-### Fire Totem (Right Bumper, R1)
+
+## Fire Totem (Right Bumper, R1)
 ![Shamen - Fire Totem](https://i.imgur.com/eOYhdYH.png)
 Constantly fires fireballs in its active radius at the enemy.
 
@@ -43,8 +44,9 @@ Constantly fires fireballs in its active radius at the enemy.
 
 Stacking the fire totems multiplies the effect:
 ![Fire Totem stack](https://i.imgur.com/UI3BzQf.gif)
+--
 
-### Healing Totem (Right Trigger, R2)
+## Healing Totem (Right Trigger, R2)
 ![Shamen - Healing Totem](https://i.imgur.com/Qb2Q702.png)
 Standing in its areal constantly heals you.
 
@@ -52,33 +54,43 @@ Standing in its areal constantly heals you.
 
 Stacking them multiplies the effect:
 ![Healing Totem stack](https://i.imgur.com/CirbNCK.gif)
+--
 
-### Root Totem (Left Trigger, L2)
+
+## Root Totem (Left Trigger, L2)
 ![Shamen - Root Totem](https://i.imgur.com/uyZZwuE.png)
 Roots totems and the enemy player in its areal, making them immobile. Counters the wind totem.
 
 ![Root Totem drop](https://i.imgur.com/snSJptF.gif)
+--
 
-### Wind Totem (Left Bumper, L1)
+
+## Wind Totem (Left Bumper, L1)
 ![Shamen - Wind Totem](https://i.imgur.com/s0oMEti.png)
 Knocks everything out of its areal including totems. Wind totems have no effect on rooted entities,
  including the root totem itself.
 
-Shamans:
+#### Shamans:
 ![Wind Totem shaman knock](https://i.imgur.com/np5UcEJ.gif)
 
-Enemy totems:
+#### Enemy totems:
 ![Wind Totem drop](https://i.imgur.com/RBoBF7j.gif)
 
-Friendly totems:
+#### Friendly totems:
 ![Wind Totem friendly totem knock](https://i.imgur.com/YOdBqGR.gifv)
+--
+
 
 ### Hitting an enemy totem with yours breaks both of them
 ![Totem Totem break](https://i.imgur.com/MU6OfL9.gif)
 *use this to counter the enemy's totems*
+--
+
 
 ### When a totem hits you, you take damage and it breaks. 
 ![Totem Shaman break](https://i.imgur.com/C3LkGdd.gif)
+--
+
 
 **You can make plays by comboing different totems with each other**
 ![Wind totem play](https://i.imgur.com/uR3aguW.gifv)
@@ -93,7 +105,7 @@ Here are a few more recommendations:
 
 **The game works with every type of joystick (generic, ps, xbox...)**
 
-## Credits
+# Credits
 Code by me and [gugakatsi](https://github.com/gugakatsi)
 
 Art by [Misho Otiashvili](https://twitter.com/corbyere) and Rati Tsikolia
