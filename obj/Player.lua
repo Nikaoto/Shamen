@@ -149,8 +149,8 @@ function Player:inAreal(x, z, rx, ry)
 end
 
 -- Used to detect totem fall collision
-function Player:willCollideWith(x, ox, z, depth)
-	return (self.x + self.ox - 5 >= x - ox and self.x - self.ox + 5 <= x + ox)
+function Player:willCollideWith(x, width, z, depth)
+	return (self.x + self.ox >= x  + 5 and self.x - self.ox <= x + width - 5)
 		and (self.z <= z + depth and self.z >= z - depth)
 end
 

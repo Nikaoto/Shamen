@@ -173,9 +173,9 @@ end
 
 function Totem:checkShake(dt)
 	if self.complete and not self.shook then --redundant first part, leave for readability
-		if player1:willCollideWith(self.x, self.ox, self.z, self.depth) then
+		if player1:willCollideWith(self.x, self.width, self.z, self.depth) then
 			self:hitShaman(player1)
-		elseif player2:willCollideWith(self.x, self.ox, self.z, self.depth) then
+		elseif player2:willCollideWith(self.x, self.width, self.z, self.depth) then
 			self:hitShaman(player2)
 		end
 		self.shook = true
