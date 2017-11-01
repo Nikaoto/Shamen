@@ -1,7 +1,6 @@
 # Shamen
 A game about two shamans made in 72 hours during the "GameFest" GameJam Tbilisi
-![Shamen](https://i.imgur.com/MGCT25a.gif)
-
+![Shamen intro](https://i.imgur.com/B4gSo4M.gifv)
 
 ## Download
 You can download the game from the [releases](https://github.com/Nikaoto/Shamen/releases) page. 
@@ -77,7 +76,7 @@ Knocks everything out of its areal including totems. Wind totems have no effect 
 ![Wind Totem drop](https://i.imgur.com/RBoBF7j.gif)
 
 #### Friendly totems:
-![Wind Totem friendly totem knock](https://i.imgur.com/YOdBqGR.gifv)
+![Wind Totem friendly totem knock](https://i.imgur.com/YOdBqGR.gif)
 --
 
 
@@ -93,7 +92,7 @@ Knocks everything out of its areal including totems. Wind totems have no effect 
 
 
 **You can make plays by comboing different totems with each other**
-![Wind totem play](https://i.imgur.com/uR3aguW.gifv)
+![Wind totem play](https://i.imgur.com/uR3aguW.gif)
 
 Here are a few more recommendations:
 * Stack fire totems on top of root to disable and damage the enemy
