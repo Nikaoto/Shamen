@@ -31,6 +31,8 @@ Both shamans have four types of totems which can be used with the joystick trigg
 ![Shamen - Fire Totem](https://i.imgur.com/eOYhdYH.png)
 Constantly fires fireballs in its active radius at the enemy.
 
+![Fire Totem drop](https://i.imgur.com/50P3CNg.gif)
+
 
 ### Healing Totem (Right Trigger, R2)
 ![Shamen - Healing Totem](https://i.imgur.com/Qb2Q702.png)
