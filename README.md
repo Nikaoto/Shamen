@@ -104,6 +104,24 @@ Here are a few more recommendations:
 
 **The game works with every type of joystick (generic, ps, xbox...)**
 
+# Contributing
+Game repositories aren't usually fit for open source, but if you wish to improve or fix something
+in Shamen, you need to have LOVE2D instaled on your machine. https://love2d.org/ has everything you 
+need, just follow the install instructions for your OS.
+
+Afterwards, just
+
+* Fork the repository
+
+* Clone your fork locally
+
+* Make changes
+
+* Send pull request
+
+and that's it!
+
+
 # Credits
 Code by me and [gugakatsi](https://github.com/gugakatsi)
 
