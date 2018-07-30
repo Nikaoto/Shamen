@@ -9,7 +9,7 @@ function loadWelcomeScreen()
   font = love.graphics.newFont("res/shafont.ttf", 350)
   titleText = love.graphics.newText(font, "SHAMEN")
   textColor = {0,0,0}
-  bgColor = {255, 129, 47, 190}
+  bgColor = {1.0, 0.51, 0.18, 0.74}
   bgoffset = 10
   love.graphics.setDefaultFilter('linear', 'linear', 4)
 
@@ -29,11 +29,11 @@ function loadWelcomeScreen()
   particleSystem:setSizes(1.5, 0.6)
   particleSystem:setLinearAcceleration(10, 10, -10, -10)
   particleSystem:setLinearDamping(0.2)
-  particleSystem:setAreaSpread('uniform', screenWidth / 2, 0)
+  particleSystem:setEmissionArea('uniform', screenWidth / 2, 0)
   particleSystem:setDirection(math.rad(90))
   particleSystem:setPosition(screenWidth/2, 0)
   particleSystem:setSpeed(410, 1000)
-	particleSystem:setColors(99, 200, 0, 180,   128, 0, 252, 130,  0, 0, 0, 0)
+	particleSystem:setColors(0.388, 0.784, 0, 0.705,   0.5, 0, 0.98, 0.509,  0, 0, 0, 0)
   canvas = love.graphics.newCanvas(screenWidth * MS, screenHeight * MS)
 end
 
@@ -51,16 +51,16 @@ function drawWelcomeScreen()
   canvas:renderTo(function()
     --love.graphics.clear(0,0,0,0.01)
     love.graphics.setBlendMode('subtract', 'premultiplied')
-    love.graphics.setColor(4, 20, 1, 10)
+    love.graphics.setColor(0.015, 0.078, 255, 0.039)
     love.graphics.rectangle('fill', 0, 0, screenWidth * MS, screenHeight * MS)
 
-    love.graphics.setColor(255,255,255,255)
+    love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
     love.graphics.setBlendMode('alpha', 'premultiplied')
     love.graphics.draw(particleSystem)
   end)
 
   love.graphics.setBlendMode('alpha', 'alphamultiply')
-  love.graphics.setColor(255,255,255,255)
+  love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
   love.graphics.draw(canvas, 0, 0, 0, 1/MS, 1/MS)
 
 --draw PRESS ANY KEY TO START GAME

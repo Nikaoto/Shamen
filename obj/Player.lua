@@ -79,7 +79,7 @@ function Player:new(name, sprite, color, joystick, coords)
 		speed = Player.AIM_SPEED,
 		hideTime = 0,
 		hideInterval = Player.AIM_HIDE_INTERVAL,
-		color = {255, 255, 255, 200},
+		color = {1, 1, 1, 0.784},
 		shouldShow = false,
 	}
 end
@@ -253,7 +253,7 @@ function Player:drawAim()
 		deep:line(self.aim.x - l*mod*0.75, self.aim.y - l*mod, self.aim.x, self.aim.y, self.aim.z + 1)
 		deep:line(self.aim.x + l*mod*0.75, self.aim.y - l*mod, self.aim.x, self.aim.y, self.aim.z + 1)
 		
-		self.color[4] = 100
+		self.color[4] = 0.39
 		deep:rectangleC(self.color, "fill", self.aim.x - Totem.WIDTH/2, self.aim.y - Totem.HEIGHT, self.aim.z + 1, Totem.WIDTH, Totem.HEIGHT)
 		deep:setColor()
 	end
@@ -329,13 +329,13 @@ end
 
 function Player:totemColor(totemIndex)
 	if totemIndex == 1 then
-		return {255, 42, 0}
+		return {1, 0.164, 0}
 	elseif totemIndex == 2 then
-		return {30, 144, 255}
+		return {0.117, 0.564, 1}
 	elseif totemIndex == 3 then
-		return {139, 69, 19}
+		return {0.545, 0.27, 0.074}
 	elseif totemIndex == 4 then
-		return {124, 252, 0}
+		return {0.498, 0.988, 0}
 	end
 end
 

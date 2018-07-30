@@ -92,9 +92,9 @@ ui.rootTotemSprite = love.graphics.newImage("res/totem_root.png")
 
 --colors
 ui.AVATAR_CIRCLE_COLOR = {}
-ui.HEALTH_BAR_COLOR = {255, 5, 5}
-ui.MANA_BAR_COLOR = {47, 135, 224}
-ui.CHARACTER_CIRCLE_COLOR = {47, 135, 224}
+ui.HEALTH_BAR_COLOR = {1.0, 0.2, 0.2}
+ui.MANA_BAR_COLOR = {0.18, 0.53, 0.88}
+ui.CHARACTER_CIRCLE_COLOR = {0.18, 0.53, 0.88}
 ui.OUTLINE_COLOR = {0, 0, 0}
 ui.OUTLINE_WIDTH = 5
 

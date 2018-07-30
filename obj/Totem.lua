@@ -13,13 +13,13 @@ Totem.DEPTH = 55
 Totem.AREAL_Z = 2
 Totem.AREAL_SIZE_X = 160
 Totem.AREAL_SIZE_Y = 100
-Totem.DEFAULT_COLOR = {0, 255, 255}
+Totem.DEFAULT_COLOR = {0, 1, 1}
 Totem.FALL_TIME = 0.2
 Totem.SHAKE_AMOUNT = 20
 Totem.DAMAGE_AMOUNT = 10
 Totem.MAX_STACKED_TOTEMS = 4
 Totem.ENEMY_STACK_DESTROY_COUNT = 2 --num of totems destroyed when dropping on stack
-Totem.colors = {{255, 42, 0}, {30, 144, 255}, {139, 69, 19}, {124, 252, 0}}
+Totem.colors = {{1, 0.164, 0}, {0.117, 0.564, 1}, {0.545, 0.27, 0.074}, {0.486, 0.988, 0}}
 Totem.MANA_COST = 25
 
 function Totem:new(name, coords, areal, color, sprite)
@@ -27,7 +27,7 @@ function Totem:new(name, coords, areal, color, sprite)
 	self.arealX = Totem.AREAL_SIZE_X
 	self.arealY = Totem.AREAL_SIZE_Y
 	self.color = color or Totem.DEFAULT_COLOR
-	self.arealColor = {color[1], color[2], color[3], 100}
+	self.arealColor = {color[1], color[2], color[3], 0.39}
 	if sprite then
 		self.sprite = sprite
 		self.width = self.sprite:getWidth()

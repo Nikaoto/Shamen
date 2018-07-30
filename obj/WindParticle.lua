@@ -13,7 +13,7 @@ function WindParticle:new(coords)
   self.psystem:setRelativeRotation(true)
   self.psystem:setRotation(math.rad(1), math.rad(359))
 	--self.psystem:setLinearAcceleration(0, 10, 0, 20)
-	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+	self.psystem:setColors(1, 1, 1, 1, 1, 1, 1, 0)
   self.timer = getTime() + 200
 end
 
@@ -35,7 +35,7 @@ function WindParticle:emit(n)
 end
 
 function getBubble(size,color)
-  color = color or {230,235,237}
+  color = color or {0.901, 0.921, 0.929}
   local bubble = love.graphics.newCanvas(size, size)
   love.graphics.setCanvas(bubble)
   love.graphics.setColor(color)

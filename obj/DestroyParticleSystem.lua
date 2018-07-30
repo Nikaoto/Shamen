@@ -5,7 +5,7 @@ require "world"
 DestroyParticleSystem = Object:extend()
 
 DestroyParticleSystem.EMIT_DEFAULT = 30
-DestroyParticleSystem.COLOR_DEFAULT = {130, 82, 1}
+DestroyParticleSystem.COLOR_DEFAULT = {0.504, 0.321, 0.003}
 DestroyParticleSystem.SPAWN_TIME = 500
 DestroyParticleSystem.SIZE = 20
 
@@ -22,7 +22,7 @@ function DestroyParticleSystem:new(coords, spawnTime, emmisionRate, size, color,
 	self.psystem:setSizeVariation(1)
 	self.psystem:setAreaSpread("normal",10,10)
 	self.psystem:setLinearAcceleration(0, l1 or 1000, 0, l2 or 2000)
-	self.psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+	self.psystem:setColors(1, 1, 1, 1, 1, 1, 1, 0)
   self.psystem:setRelativeRotation(true)
   self.psystem:setRotation(math.rad(rot or 270))
   self.timer = self.spawnTime + getTime()

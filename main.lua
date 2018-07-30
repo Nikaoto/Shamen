@@ -14,9 +14,9 @@ screen = require "lib/shack"
 
 
 gameStart = false
-local red = {255, 0, 0}
-local green = {0, 255, 0}
-local blue = {0, 0, 255}
+local red = {1, 0, 0}
+local green = {0, 1, 0}
+local blue = {0, 0, 3}
 
 function love.keypressed(key)
 	if key == "escape" then

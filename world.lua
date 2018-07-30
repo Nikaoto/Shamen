@@ -16,8 +16,8 @@ function world:load()
 	world.minZ = world.limitTop
 	world.zRange = world.maxZ - world.minZ
 
-	world.skyColor = {0, 172, 230}
-	world.groundColor = {39, 159, 39}
+	world.skyColor = {0, 0.674, 0.9}
+	world.groundColor = {0.15, 0.623, 0.152}
 	grassSprite = love.graphics.newImage("res/grass.png")
 	math.randomseed(os.time())
 	world.grass = {}

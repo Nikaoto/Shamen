@@ -46,7 +46,7 @@ end
 
 function Fireball:checkHitTarget(target)
   if dist(self.x, self.y, self.target.x, self.target.y) <= self.radius then
-    table.insert(objectPool, DestroyParticleSystem({x = self.x, y = self.y}, _, 20, 20, {255, 0, 38}, 90, 500, 700))
+    table.insert(objectPool, DestroyParticleSystem({x = self.x, y = self.y}, _, 20, 20, {1, 0, 0.149}, 90, 500, 700))
     self.target:takeDamage(Fireball.DAMAGE_AMOUNT)
     self.targetHit = true
   end
