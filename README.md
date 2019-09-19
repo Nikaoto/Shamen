@@ -29,7 +29,7 @@ Use the right stick to move your target around.
 
 Both shamans have four types of totems which can be used with the joystick triggers and bumpers.
 
-Each totem stays and applies their efect FOREVER only in their active radius, unless the enemy hits 
+Each totem stays and applies their effect FOREVER only in their active radius, unless the enemy hits 
 it with their totem to destroy it.
 
 **You can stack your totems on top of each other to combo their effects**
